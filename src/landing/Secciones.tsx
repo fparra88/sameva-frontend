@@ -1,21 +1,22 @@
 import {
   ArrowRight, ArrowsLeftRight, Buildings, CalendarCheck, ChartLineUp, Check, CreditCard, Cube,
-  FacebookLogo, Handshake, InstagramLogo, Lightning, Plugs, QrCode, Quotes, Receipt, Robot, Tray,
+  Handshake, Lightning, QrCode, Quotes, Receipt, Robot, Tray,
   UserPlus, UsersThree, WhatsappLogo, X, type Icon,
 } from '@phosphor-icons/react'
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Logo } from '../components'
+import { EscenarioCanales } from './EscenarioCanales'
 import { FAQ, PAQUETES_CREDITOS, UBICACION, formatoMXN, waLink } from '../lib/contenido'
 import { HERRAMIENTAS, topesPlan } from '../lib/planes'
 import type { PlanPublico } from '../lib/tipos'
 import { useApi } from '../lib/useApi'
 
-function Encabezado({ eyebrow, titulo, children, id }: { eyebrow: string; titulo: ReactNode; children?: ReactNode; id: string }) {
+function Encabezado({ eyebrow, titulo, children, id }: { eyebrow?: string; titulo: ReactNode; children?: ReactNode; id: string }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
-      <p className="eyebrow">{eyebrow}</p>
-      <h2 id={id} className="mt-3 text-3xl font-bold sm:text-4xl">{titulo}</h2>
+      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+      <h2 id={id} className={`${eyebrow ? 'mt-3 ' : ''}text-3xl font-bold sm:text-4xl`}>{titulo}</h2>
       {children && <p className="mt-4 text-lg text-ink-muted">{children}</p>}
     </div>
   )
@@ -23,44 +24,16 @@ function Encabezado({ eyebrow, titulo, children, id }: { eyebrow: string; titulo
 
 /* ---------------------------------------------------------------- Canales */
 
-const CANALES: { Icono: Icon; nombre: string; color: string; texto: string; conexion: string }[] = [
-  {
-    Icono: WhatsappLogo, nombre: 'WhatsApp', color: 'text-whatsapp bg-whatsapp/10',
-    texto: 'Atiende, cotiza y agenda por el canal donde ya están tus clientes. Plantillas aprobadas para avisos y recordatorios.',
-    conexion: 'WhatsApp Business API o WhatsApp Web con código QR',
-  },
-  {
-    Icono: InstagramLogo, nombre: 'Instagram', color: 'text-instagram bg-instagram/10',
-    texto: 'Responde mensajes directos al instante y convierte a quien pregunta por una publicación en un lead registrado.',
-    conexion: 'Cuenta profesional de Instagram vinculada a Meta',
-  },
-  {
-    Icono: FacebookLogo, nombre: 'Facebook', color: 'text-facebook bg-facebook/10',
-    texto: 'Messenger de tu página atendido 24/7, con el mismo agente, el mismo tono y la misma información de tu negocio.',
-    conexion: 'Inicio de sesión con Meta y elige tu página',
-  },
-]
-
 export function Canales() {
   return (
-    <section id="canales" aria-labelledby="canales-t" className="scroll-mt-20 py-20 md:py-28">
+    <section id="canales" aria-labelledby="canales-t" className="scroll-mt-16 pb-20 pt-8 md:pb-28 md:pt-10">
       <div className="container-page">
-        <Encabezado id="canales-t" eyebrow="01 — Canales" titulo="Un agente, tres canales, una sola bandeja">
-          Tus clientes escriben por donde prefieren. El agente contesta en todos con la misma información, y tú ves
-          todo junto en tu portal.
+        <Encabezado id="canales-t" titulo="Un agente. Tres canales. Una sola bandeja.">
+          Tus clientes escriben por donde prefieren. Tú lo ves todo junto.
         </Encabezado>
-        <ul className="mt-14 grid gap-5 md:grid-cols-3">
-          {CANALES.map(({ Icono, nombre, color, texto, conexion }) => (
-            <li key={nombre} className="card flex flex-col p-6 transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/5">
-              <span className={`grid size-12 place-items-center rounded-xl ${color}`}><Icono size={28} weight="fill" aria-hidden /></span>
-              <h3 className="mt-5 text-xl font-semibold">{nombre}</h3>
-              <p className="mt-2 flex-1 text-ink-muted">{texto}</p>
-              <p className="mt-5 flex items-start gap-2 border-t border-line pt-4 text-sm text-ink">
-                <Plugs size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden /> {conexion}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <div className="mx-auto mt-10 max-w-[1120px]">
+          <EscenarioCanales />
+        </div>
       </div>
     </section>
   )
@@ -80,8 +53,7 @@ export function ComoFunciona() {
     <section id="como-funciona" aria-labelledby="como-t" className="scroll-mt-20 bg-ink py-20 text-white md:py-28">
       <div className="container-page">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent-soft">02 — Integración fácil</p>
-          <h2 id="como-t" className="mt-3 text-3xl font-bold sm:text-4xl">Operando en días, no en meses</h2>
+          <h2 id="como-t" className="text-3xl font-bold sm:text-4xl">Operando en días, no en meses</h2>
           <p className="mt-4 text-lg text-white/75">
             No necesitas equipo técnico ni cambiar cómo trabajas. Nuestro equipo te acompaña en la implementación.
           </p>
@@ -121,8 +93,7 @@ export function Operacion() {
     <section aria-labelledby="op-t" className="py-20 md:py-28">
       <div className="container-page grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-start">
         <div className="lg:sticky lg:top-28">
-          <p className="eyebrow">03 — Operación</p>
-          <h2 id="op-t" className="mt-3 text-3xl font-bold sm:text-4xl">De la conversación a la operación</h2>
+          <h2 id="op-t" className="text-3xl font-bold sm:text-4xl">De la conversación a la operación</h2>
           <p className="mt-4 text-lg text-ink-muted">
             La IA no solo contesta: cotiza, agenda y actualiza tu sistema de gestión en tiempo real. Cada mensaje se
             convierte en una venta, una cita o un lead con dueño.
@@ -157,7 +128,7 @@ export function Portal() {
   return (
     <section id="portal" aria-labelledby="portal-t" className="scroll-mt-20 border-y border-line bg-surface py-20 md:py-28">
       <div className="container-page">
-        <Encabezado id="portal-t" eyebrow="04 — Portal" titulo="Todo tu servicio en un solo portal">
+        <Encabezado id="portal-t" titulo="Todo tu servicio en un solo portal">
           La misma página donde nos conociste es donde administras tu agente. Entra con tu cuenta y controla todo.
         </Encabezado>
         <ul className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
@@ -263,7 +234,7 @@ export function Precios() {
   return (
     <section id="precios" aria-labelledby="precios-t" className="scroll-mt-20 bg-muted/60 py-20 md:py-28">
       <div className="container-page">
-        <Encabezado id="precios-t" eyebrow="05 — Precios" titulo={<>Precios claros, <span className="text-gradient">en pesos</span> y sin letras chiquitas</>}>
+        <Encabezado id="precios-t" titulo={<>Precios claros, <span className="text-gradient">en pesos</span> y sin letras chiquitas</>}>
           Pago mensual, IVA incluido. Sin plazo forzoso: cambia o cancela cuando quieras.
         </Encabezado>
 

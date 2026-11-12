@@ -1,0 +1,11 @@
+/* Escenario animado de la sección «Canales» (landing). Prefijo cn- para no chocar con .card global. */
+.cn-escenario { font-family: inherit; color: #0E1B3D }
+.cn-card { transition: transform .25s ease, box-shadow .25s ease; box-shadow: 0 1px 0 #fff inset, 0 2px 4px rgba(14,27,61,.07), 0 16px 30px -10px rgba(14,27,61,.30) }
+.cn-card:hover { transform: translateY(-4px); box-shadow: 0 1px 0 #fff inset, 0 4px 8px rgba(14,27,61,.08), 0 26px 44px -14px rgba(14,27,61,.42) }
+.cn-card > div:first-child { box-shadow: inset 0 -3px 0 rgba(14,27,61,.08), inset 0 2px 0 rgba(255,255,255,.8), 0 8px 14px -6px rgba(14,27,61,.28) }
+.cn-escenario div[style*="border-radius: 999px"] { box-shadow: 0 1px 0 #fff inset, 0 2px 4px rgba(14,27,61,.07), 0 12px 22px -10px rgba(14,27,61,.28) }
+@keyframes cn-ping { 0% { transform: scale(.6); opacity: .7 } 100% { transform: scale(1.9); opacity: 0 } }
+.cn-live { position: relative }
+.cn-live::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #1FA855; animation: cn-ping 1.8s ease-out infinite }
+@media (max-width: 960px) { .cn-link { display: none !important } }
+@media (prefers-reduced-motion: reduce) { .cn-live::after { animation: none } .cn-card { transition: none } }
