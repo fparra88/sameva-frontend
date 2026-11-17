@@ -11,7 +11,7 @@ import { Aviso, Chip } from '../ui'
 const ROL: Record<string, string> = { owner: 'Dueño', superadmin: 'Administrador', member: 'Colaborador', vendedor: 'Vendedor', proveedor: 'Proveedor' }
 const ROL_DESC: Record<RolInvitable, string> = {
   member: 'Ve conversaciones, embudo y agenda; no cambia la configuración.',
-  vendedor: 'Solo ve lo suyo: sus leads y las conversaciones que le asignen.',
+  vendedor: 'Solo ve lo suyo: sus clientes y las conversaciones que le asignen.',
   proveedor: 'Solo ve su agenda de citas y maneja su disponibilidad.',
 }
 const mensaje = (e: unknown, r: string) => (e instanceof ApiError ? e.message : r)

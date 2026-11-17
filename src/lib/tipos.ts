@@ -72,6 +72,47 @@ export interface HistorialLead {
   creado_en: string
 }
 
+// ---------- Embudo (tablero del dueño) ----------
+
+/** Lead con lo llenado en el CRM más lo que se sabe por su chat (GET /tenants/{id}/embudo). */
+export interface LeadEmbudo extends Lead {
+  cliente_username: string | null
+  cliente_desde: string | null
+  alta_en: string | null
+  etapa_desde: string | null
+  conversation_id: string | null
+  canal: string | null
+  chat_estado: string | null
+  chat_asignado_a: string | null
+  chat_asignado_nombre: string | null
+  ultimo_mensaje_en: string | null
+  ultimo_mensaje: string | null
+  /** 'user' = el cliente escribió al último. */
+  ultimo_mensaje_rol: string | null
+  total_mensajes: number
+  mensajes_cliente: number
+}
+
+export interface EtapaResumen { estado: string; total: number; monto: string | number; sin_vendedor: number; seguimientos_vencidos: number }
+
+export interface EmbudoDatos {
+  leads: LeadEmbudo[]
+  etapas: EtapaResumen[]
+  por_canal: { canal: string; total: number; ganados: number; monto_ganado: string | number }[]
+  motivos_perdida: { motivo: string; total: number }[]
+}
+
+export interface MetricasEmbudo {
+  total_clientes: number
+  etapas: { estado: string; total: number; porcentaje: number; horas_promedio: number | null }[]
+  tasa_conversion_global: number | null
+  ranking: { vendedor_id: string; nombre: string; activo: boolean; abiertos: number; ganados: number; perdidos: number; monto_ganado: string | number; tasa_cierre: number | null }[]
+}
+
+export interface ConversionEmbudo { total_leads: number; etapas: { estado: string; alcanzados: number; porcentaje: number }[] }
+
+export interface TendenciaEmbudo { meses: { periodo: string; nuevos: number; ganados: number; perdidos: number; monto_ganado: string | number }[] }
+
 export interface Vendedor { id: string; nombre: string; activo: boolean; clientes_activos: number; portal_user_id: string | null }
 
 export interface Servicios { gestion_vendedores_activo: boolean }
@@ -273,6 +314,44 @@ export interface Herramienta {
   url_original: string | null
   /** La crea y mantiene el sistema (calendario): se pausa o edita, no se borra. */
   gestionada: boolean
+  /** Solo `db_externa` (nada secreto: la contraseña nunca llega al navegador). */
+  motor?: string | null
+  host?: string | null
+  base?: string | null
+  estado?: 'ok' | 'requiere_atencion' | null
+  n_objetos?: number | null
+}
+
+export type MotorDb = 'postgresql' | 'mysql'
+
+export interface DbExternaInfo {
+  disponible: boolean
+  incluida_en_plan: boolean
+  ip_salida: string | null
+  conexiones_usadas: number
+  conexiones_max: number
+  motores: MotorDb[]
+  texto_version: string
+}
+
+export interface DbColumna { nombre: string; tipo: string; sensible: boolean }
+export interface DbObjeto { objeto: string; esquema: string | null; nombre: string; tipo: 'vista' | 'tabla'; columnas: DbColumna[] }
+export interface DbPermisos { hay: boolean; verificable: boolean; detalle: string[] }
+export interface DbProbarResultado { objetos: DbObjeto[]; permisos_escritura: DbPermisos }
+
+/** Lo no secreto de una conexión guardada, para reabrir el asistente. */
+export interface DbExternaDetalle {
+  display_name: string
+  description: string
+  motor: MotorDb
+  host: string
+  puerto: number | null
+  base: string
+  usuario: string
+  ssl_modo: 'require' | 'verify'
+  estado: 'ok' | 'requiere_atencion'
+  ultimo_error: string | null
+  objetos: { objeto: string; descripcion: string; columnas: string[] }[]
 }
 
 export interface HerramientaNumero {

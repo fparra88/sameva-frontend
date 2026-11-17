@@ -19,13 +19,22 @@ function Seccion({ titulo, children }: { titulo: string; children: ReactNode }) 
 
 const SELECT = 'min-h-10 w-full rounded-lg border border-line bg-surface px-2.5 text-sm outline-none focus:border-primary disabled:opacity-60'
 
-/** Ficha CRM del contacto de la conversación abierta: embudo, vendedor, seguimiento e historial. */
-export function FichaCrm({ conversacion, tenantId, crmActivo, onCambio, onCerrar }: {
-  conversacion: ConversacionDetalle
+/** Lo que la ficha necesita del contacto. `id` null = lead sin conversación (alta manual, desde el Embudo). */
+export type ContactoFicha = Pick<ConversacionDetalle,
+  'user_id' | 'channel_type' | 'started_at' | 'usuario_nombre' | 'usuario_handle' | 'usuario_username' | 'asignado_a' | 'asignacion_nota'
+> & { id: string | null }
+
+/**
+ * Ficha CRM de un contacto: embudo, vendedor, seguimiento e historial. Vive en la conversación abierta
+ * (Bandeja) y en el panel del lead (Embudo); `children` va arriba del todo (ahí el Embudo pinta los datos del chat).
+ */
+export function FichaCrm({ conversacion, tenantId, crmActivo, onCambio, onCerrar, children }: {
+  conversacion: ContactoFicha
   tenantId: string | null
   crmActivo: boolean
   onCambio: () => void
   onCerrar: () => void
+  children?: ReactNode
 }) {
   const { usuario } = useAuth()
   const userId = conversacion.user_id
@@ -35,7 +44,7 @@ export function FichaCrm({ conversacion, tenantId, crmActivo, onCambio, onCerrar
   const lead = useApi<Lead>(crmActivo && userId ? `/pipeline/${userId}` : null)
   const historial = useApi<HistorialLead[]>(crmActivo && userId && lead.datos ? `/pipeline/${userId}/historial` : null)
   const vendedores = useApi<Vendedor[]>(crmActivo && negocio && tenantId ? `/tenants/${tenantId}/vendedores` : null)
-  const asignables = useApi<Asignable[]>(gerencia ? '/conversaciones/asignables' : null)
+  const asignables = useApi<Asignable[]>(gerencia && conversacion.id ? '/conversaciones/asignables' : null)
 
   const [ocupado, setOcupado] = useState(false)
   const [fallo, setFallo] = useState<string | null>(null)
@@ -101,7 +110,9 @@ export function FichaCrm({ conversacion, tenantId, crmActivo, onCambio, onCerrar
       <div className="min-h-0 flex-1 overflow-y-auto">
         {fallo && <p role="alert" className="m-3 rounded-xl bg-danger/10 p-3 text-sm text-danger">{fallo}</p>}
 
-        {gerencia && (
+        {children}
+
+        {gerencia && conversacion.id && (
           <Seccion titulo="Responsable del chat">
             <select aria-label="Responsable del chat" className={SELECT} disabled={ocupado} value={conversacion.asignado_a ?? ''}
               onChange={(e) => asignarChat(e.target.value)}>

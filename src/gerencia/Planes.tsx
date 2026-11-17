@@ -9,7 +9,10 @@ import { Aviso, Chip, Dialogo } from '../portal/ui'
 
 const FAMILIAS: Record<string, string> = {
   calendario: 'Calendario', sql_lectura: 'Consulta SQL', http: 'HTTP', google_sheets: 'Google Sheets', google_docs: 'Google Docs',
+  db_externa: 'Base de datos del cliente (MySQL/PostgreSQL)',
 }
+/** Opcionales: un plan nuevo NO las trae marcadas (nacen apagadas; se activan a propósito). */
+const FAMILIAS_OPCIONALES = new Set(['db_externa'])
 const FAMILIAS_ORDEN = Object.keys(FAMILIAS)
 const tope = (v: number | null) => (v === null ? 'Sin tope' : String(v))
 
@@ -30,7 +33,7 @@ const aForm = (p: PlanGerencia | null): Form => ({
   historial: p?.historial_maximo?.toString() ?? '', stripe: p?.stripe_price_id ?? '', orden: String(p?.orden ?? 0),
   activo: p?.activo ?? true, agente: p?.agente_ia_activo ?? true, ventas: p?.gestion_vendedores_activo ?? true,
   coexistencia: p?.coexistencia_activa ?? false, destacado: p?.destacado ?? false,
-  familias: new Set(p ? p.herramientas_plan : FAMILIAS_ORDEN), modelos: new Set(p?.modelos_permitidos ?? []),
+  familias: new Set(p ? p.herramientas_plan : FAMILIAS_ORDEN.filter((x) => !FAMILIAS_OPCIONALES.has(x))), modelos: new Set(p?.modelos_permitidos ?? []),
 })
 
 const entero = (v: string) => (v.trim() === '' ? null : Number(v))
@@ -196,10 +199,10 @@ function EditorPlan({ plan, modelos, onCerrar, onGuardado }: { plan: PlanGerenci
           <legend className="mb-2 text-sm font-semibold">Topes <span className="font-normal text-ink-muted">(vacío = sin tope)</span></legend>
           <Campo id="p-nu" etiqueta="Números de WhatsApp"><input id="p-nu" className="field" inputMode="numeric" value={f.max_numeros} onChange={(e) => set('max_numeros', e.target.value)} /></Campo>
           <Campo id="p-hi" etiqueta="Historial del agente" ayuda={modelos ? `${modelos.historial_min}–${modelos.historial_max} mensajes` : undefined}><input id="p-hi" className="field" inputMode="numeric" value={f.historial} onChange={(e) => set('historial', e.target.value)} /></Campo>
-          <Campo id="p-le" etiqueta="Leads al mes"><input id="p-le" className="field" inputMode="numeric" value={f.max_leads} onChange={(e) => set('max_leads', e.target.value)} /></Campo>
+          <Campo id="p-le" etiqueta="Conversaciones al mes"><input id="p-le" className="field" inputMode="numeric" value={f.max_leads} onChange={(e) => set('max_leads', e.target.value)} /></Campo>
           <Campo id="p-ve" etiqueta="Vendedores"><input id="p-ve" className="field" inputMode="numeric" value={f.max_vendedores} onChange={(e) => set('max_vendedores', e.target.value)} /></Campo>
           <Campo id="p-pr" etiqueta="Proveedores"><input id="p-pr" className="field" inputMode="numeric" value={f.max_proveedores} onChange={(e) => set('max_proveedores', e.target.value)} /></Campo>
-          {plan && <p className="self-end text-xs text-ink-muted">En vendedores, proveedores y leads, vacío deja el valor como está.</p>}
+          {plan && <p className="self-end text-xs text-ink-muted">En vendedores, proveedores y conversaciones, vacío deja el valor como está.</p>}
         </fieldset>
 
         <fieldset>

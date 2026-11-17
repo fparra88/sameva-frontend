@@ -1,5 +1,5 @@
 import {
-  CalendarBlank, Gear, Plugs, Robot, SignOut, Tray, Wrench, type Icon,
+  CalendarBlank, Funnel, Gear, Plugs, Robot, SignOut, Tray, Wrench, type Icon,
 } from '@phosphor-icons/react'
 import { Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Spinner } from '../components'
@@ -17,6 +17,7 @@ interface Seccion { to: string; label: string; Icono: Icon; roles: 'negocio' | '
 /** Secciones del dock. `negocio` = owner/superadmin/member; `operativo` = además vendedor; `todos` = también proveedor. */
 export const NAV: Seccion[] = [
   { to: '/portal/bandeja', label: 'Bandeja', Icono: Tray, roles: 'operativo' },
+  { to: '/portal/embudo', label: 'Embudo', Icono: Funnel, roles: 'negocio' },
   { to: '/portal/agenda', label: 'Agenda', Icono: CalendarBlank, roles: 'todos' },
   { to: '/portal/agente', label: 'Agente', Icono: Robot, roles: 'negocio' },
   { to: '/portal/canales', label: 'Canales', Icono: Plugs, roles: 'negocio' },
@@ -53,7 +54,7 @@ export default function PortalLayout() {
       </main>
 
       <nav aria-label="Portal" className="dock-seguro fixed inset-x-0 bottom-3 z-50 flex justify-center px-3">
-        {/* En pantallas angostas (≤ 400 px) los 9 botones no caben: el dock se desplaza en horizontal. */}
+        {/* En pantallas angostas (≤ 400 px) los 10 botones no caben: el dock se desplaza en horizontal. */}
         <div className="sin-barra flex max-w-full items-center gap-0 overflow-x-auto sm:gap-1 rounded-full border border-line bg-surface/90 p-1.5 shadow-xl shadow-black/30 backdrop-blur-md [&>*]:shrink-0">
           {visibles.map(({ to, label, Icono }) => (
             <NavLink key={to} to={to} aria-label={label} title={label}

@@ -84,7 +84,7 @@ const CAPACIDADES: { Icono: Icon; titulo: string; texto: string }[] = [
   { Icono: CalendarCheck, titulo: 'Agenda y recuerda', texto: 'Consulta disponibilidad, reserva, reagenda y manda recordatorios de cita.' },
   { Icono: Cube, titulo: 'Consulta inventario', texto: 'Responde con existencias y datos actualizados de tu sistema de gestión.' },
   { Icono: CreditCard, titulo: 'Cobra por link', texto: 'Envía ligas de pago dentro de la conversación y registra el cobro.' },
-  { Icono: UsersThree, titulo: 'Reparte leads', texto: 'Asigna cada lead al vendedor correcto y da seguimiento en el CRM.' },
+  { Icono: UsersThree, titulo: 'Reparte conversaciones', texto: 'Asigna cada conversación al vendedor correcto y da seguimiento en el CRM.' },
   { Icono: ArrowsLeftRight, titulo: 'Pasa a una persona', texto: 'Cuando hace falta, transfiere la conversación a tu equipo con todo el contexto.' },
 ]
 
@@ -96,7 +96,7 @@ export function Operacion() {
           <h2 id="op-t" className="text-3xl font-bold sm:text-4xl">De la conversación a la operación</h2>
           <p className="mt-4 text-lg text-ink-muted">
             La IA no solo contesta: cotiza, agenda y actualiza tu sistema de gestión en tiempo real. Cada mensaje se
-            convierte en una venta, una cita o un lead con dueño.
+            convierte en una venta, una cita o una conversación con dueño.
           </p>
         </div>
         <ul className="grid gap-4 sm:grid-cols-2">
@@ -119,7 +119,7 @@ const MODULOS: { Icono: Icon; titulo: string; texto: string }[] = [
   { Icono: Tray, titulo: 'Bandeja unificada', texto: 'WhatsApp, Instagram y Facebook en un solo lugar. Toma o devuelve conversaciones a la IA.' },
   { Icono: Robot, titulo: 'Tu agente', texto: 'Ajusta instrucciones, tono y herramientas. Pruébalo antes de publicarlo.' },
   { Icono: CalendarCheck, titulo: 'Agenda', texto: 'Servicios, proveedores y citas, sincronizados con lo que agenda el agente.' },
-  { Icono: Handshake, titulo: 'CRM y vendedores', texto: 'Pipeline de leads, asignación automática y visitas de campo.' },
+  { Icono: Handshake, titulo: 'CRM y vendedores', texto: 'Pipeline de conversaciones, asignación automática y visitas de campo.' },
   { Icono: ChartLineUp, titulo: 'Reportes', texto: 'Mensajes, conversaciones por canal, consumo de créditos y resultados.' },
   { Icono: Buildings, titulo: 'Tu cuenta', texto: 'Plan, pagos, equipo e invitaciones, sin tener que pedírnoslo.' },
 ]

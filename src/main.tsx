@@ -13,6 +13,7 @@ const Privacidad = lazy(() => import('./landing/Legal').then((m) => ({ default: 
 const Entrar = lazy(() => import('./portal/Acceso').then((m) => ({ default: m.Entrar })))
 const Registro = lazy(() => import('./portal/Acceso').then((m) => ({ default: m.Registro })))
 const Bandeja = lazy(() => import('./portal/bandeja/Bandeja'))
+const Embudo = lazy(() => import('./portal/embudo/Embudo'))
 const Agente = lazy(() => import('./portal/agente/Agente'))
 const Herramientas = lazy(() => import('./portal/herramientas/Herramientas'))
 const Agenda = lazy(() => import('./portal/agenda/Agenda'))
@@ -50,6 +51,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/portal" element={<PortalLayout />}>
               <Route path="bandeja/:id?" element={<Bandeja />} />
               <Route path="conversaciones/*" element={<Navigate to="/portal/bandeja" replace />} />
+              <Route path="embudo" element={<Embudo />} />
               <Route path="agente" element={<Agente />} />
               <Route path="herramientas" element={<Herramientas />} />
               <Route path="agenda" element={<Agenda />} />

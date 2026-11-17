@@ -77,16 +77,16 @@ export function Terminos() {
         <ul>
           <li>Agente de IA que responde mensajes de tus clientes en los canales que conectes, usando la configuración e información que tú le proporciones.</li>
           <li>Bandeja unificada, con la posibilidad de tomar una conversación en cualquier momento y devolverla a la IA.</li>
-          <li>Agenda de citas, avisos, CRM y seguimiento de ventas, herramientas conectadas (como Google Sheets y Docs) y cobros mediante enlaces de pago, según el plan contratado.</li>
+          <li>Agenda de citas, avisos, CRM y seguimiento de ventas, herramientas conectadas (como Google Sheets y Docs, o una base de datos MySQL o PostgreSQL propia) y cobros mediante enlaces de pago, según el plan contratado.</li>
         </ul>
-        <p>Las funciones disponibles, límites (vendedores, proveedores, créditos y leads mensuales) y precios dependen del plan vigente publicado en el sitio.</p>
+        <p>Las funciones disponibles, límites (vendedores, proveedores, créditos y conversaciones mensuales) y precios dependen del plan vigente publicado en el sitio.</p>
       </Seccion>
 
       <Seccion t="4. Planes, créditos y pagos">
         <ul>
           <li>Los precios se muestran en pesos mexicanos. Los cobros se procesan con un proveedor de pagos externo (Stripe); no almacenamos los datos completos de tu tarjeta.</li>
           <li>Cada uso de una herramienta por el agente consume créditos. Los créditos del plan se renuevan cada mes y no se acumulan; los paquetes extra no vencen.</li>
-          <li>Al llegar al tope mensual de leads, el agente deja de registrar nuevos hasta el siguiente ciclo.</li>
+          <li>Al llegar al tope mensual de conversaciones, el agente deja de registrar nuevos hasta el siguiente ciclo.</li>
           <li>Subir de plan surte efecto de inmediato. Bajar de plan o cancelar aplica en el siguiente ciclo mensual. No hay plazo forzoso.</li>
           <li>Salvo que la ley disponga otra cosa, los pagos realizados no son reembolsables por periodos ya iniciados ni por créditos ya consumidos.</li>
           <li>Si un pago falla o la suscripción vence, podemos limitar o suspender funciones hasta regularizarla.</li>
@@ -105,6 +105,7 @@ export function Terminos() {
         <ul>
           <li>El agente genera respuestas automáticas con modelos de IA y puede cometer errores o dar información incompleta. Debes revisar su configuración, mantener actualizada la información de tu negocio y supervisar las conversaciones.</li>
           <li>Eres responsable del contenido que configuras (instrucciones, precios, políticas) y de lo que el agente comunique en tu nombre dentro de ese marco.</li>
+          <li>Si conectas una base de datos propia, eres responsable de los datos que expones al agente y de tener derecho a usarlos con ese fin. Te recomendamos usar un usuario de solo lectura y, de preferencia, vistas con únicamente lo necesario. El agente solo consulta las tablas, vistas y columnas que elijas, y esa información puede mostrarse a tus clientes en las conversaciones y ser procesada por nuestros proveedores de IA. Registramos tu aceptación y los permisos que detectamos en el usuario que conectaste.</li>
           <li>No uses el agente para decisiones que requieran asesoría profesional (médica, legal, financiera) sin intervención humana.</li>
         </ul>
       </Seccion>
@@ -181,7 +182,7 @@ export function Privacidad() {
       </p>
 
       <Seccion t="1. Responsable">
-        <p>OperativAI, con domicilio en Guadalajara, Jalisco, México, es responsable del tratamiento de los datos de las personas que se registran y usan el portal. Sobre los datos de los clientes finales de cada negocio, el negocio es el responsable y OperativAI es encargado (ver sección 7).</p>
+        <p>Fernando Ramon Parra Villanueva, con domicilio en 8 de julio 462 colonia Centro Guadalajara, Jalisco, México, es responsable del tratamiento de los datos de las personas que se registran y usan el portal. Sobre los datos de los clientes finales de cada negocio, el negocio es el responsable y OperativAI es encargado (ver sección 7).</p>
       </Seccion>
 
       <Seccion t="2. Datos que recabamos">
@@ -189,7 +190,7 @@ export function Privacidad() {
           <li><strong>Cuenta y negocio:</strong> nombre, correo electrónico, contraseña (almacenada cifrada con hash), nombre del negocio, foto de perfil opcional, rol y zona horaria.</li>
           <li><strong>Clientes finales de tu negocio:</strong> nombre o identificador del canal (número de WhatsApp, usuario de Instagram o Facebook), mensajes y archivos adjuntos que envían, datos de citas y de seguimiento comercial (etapa del embudo, notas, vendedor asignado).</li>
           <li><strong>Pagos:</strong> historial y estado de suscripción, créditos y cobros. Los datos de tarjeta los captura y resguarda directamente el procesador de pagos; nosotros no los almacenamos.</li>
-          <li><strong>Conexiones:</strong> credenciales o tokens de acceso a los canales y herramientas que conectes (Meta, Google), guardados con medidas de seguridad.</li>
+          <li><strong>Conexiones:</strong> credenciales o tokens de acceso a los canales y herramientas que conectes (Meta, Google) y, si conectas una base de datos propia, su dirección, usuario y contraseña (esta última cifrada), guardados con medidas de seguridad.</li>
           <li><strong>Técnicos y de soporte:</strong> dirección IP, navegador y sistema, registros de acceso y de auditoría, y la información que incluyas al reportar un problema (descripción y captura opcional).</li>
         </ul>
         <p>No solicitamos datos personales sensibles. Te pedimos no compartir con el agente información sensible innecesaria, y a tus clientes tampoco.</p>
@@ -213,6 +214,7 @@ export function Privacidad() {
           <li>Proveedores de inteligencia artificial, que procesan el texto de las conversaciones para generar respuestas.</li>
           <li>Stripe, para pagos y cobros.</li>
           <li>Google, si activas las herramientas de Sheets o Docs.</li>
+          <li>Tu propia base de datos, si la conectas: consultamos únicamente las tablas, vistas y columnas que elijas y no creamos una copia de ella.</li>
           <li>Proveedores de infraestructura, almacenamiento y envío de correo.</li>
           <li>Autoridades, cuando exista un mandato legal.</li>
         </ul>

@@ -18,11 +18,17 @@ export function Campana() {
   const { alertas, noLeidas, toasts, cerrarToast, marcarLeida, marcarTodas } = useAlertas()
   const [abierta, setAbierta] = useState(false)
   const raiz = useRef<HTMLDivElement>(null)
+  const panel = useRef<HTMLDivElement>(null)
   const navegar = useNavigate()
 
   useEffect(() => {
     if (!abierta) return
-    const fuera = (e: MouseEvent) => { if (!raiz.current?.contains(e.target as Node)) setAbierta(false) }
+    // El panel vive en un Portal (fuera de `raiz`): hay que contarlo como "dentro",
+    // si no el mousedown lo cierra antes de que llegue el click.
+    const fuera = (e: MouseEvent) => {
+      const t = e.target as Node
+      if (!raiz.current?.contains(t) && !panel.current?.contains(t)) setAbierta(false)
+    }
     const tecla = (e: KeyboardEvent) => { if (e.key === 'Escape') setAbierta(false) }
     document.addEventListener('mousedown', fuera)
     window.addEventListener('keydown', tecla)
@@ -47,7 +53,7 @@ export function Campana() {
       </button>
 
       {abierta && (
-        <Portal><div role="dialog" aria-label="Alertas" className="card fixed inset-x-3 bottom-20 z-[65] mx-auto flex max-h-[70dvh] max-w-md flex-col overflow-hidden shadow-2xl">
+        <Portal><div ref={panel} role="dialog" aria-label="Alertas" className="card fixed inset-x-3 bottom-20 z-[65] mx-auto flex max-h-[70dvh] max-w-md flex-col overflow-hidden shadow-2xl">
           <header className="flex items-center justify-between gap-2 border-b border-line px-4 py-3">
             <h2 className="font-semibold">Alertas</h2>
             {noLeidas > 0 && <button type="button" onClick={marcarTodas} className="btn-ghost min-h-8 px-3 text-xs"><Checks size={14} aria-hidden /> Marcar todas</button>}

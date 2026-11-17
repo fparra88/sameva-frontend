@@ -1,16 +1,19 @@
 import {
-  ArrowClockwise, CalendarDots, Copy, Table, FileText, PencilSimple, Plus, ShieldCheck, Trash, Wrench, type Icon,
+  ArrowClockwise, CalendarDots, Copy, Database, Table, FileText, PencilSimple, Plus, ShieldCheck, Trash, Wrench, type Icon,
 } from '@phosphor-icons/react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Spinner } from '../../components'
 import { api, ApiError } from '../../lib/api'
 import { fechaCorta, hora } from '../../lib/formato'
-import type { Herramienta, HerramientaNumero, ListaNumeros } from '../../lib/tipos'
+import type { DbExternaInfo, Herramienta, HerramientaNumero, ListaNumeros } from '../../lib/tipos'
 import { useAuth } from '../../lib/auth'
 import { esGerencia } from '../../lib/roles'
 import { useApi } from '../../lib/useApi'
 import { Aviso, Chip, Dialogo } from '../ui'
+import { ConectarBaseDatos } from './ConectarBaseDatos'
 import { ConsumoCreditos } from './ConsumoCreditos'
+import { MOTORES } from './guiaDb'
 
 type TipoGoogle = 'google_sheets' | 'google_docs'
 
@@ -19,12 +22,15 @@ const TIPO: Record<TipoGoogle, { Icono: Icon; etiqueta: string; recurso: string;
   google_docs: { Icono: FileText, etiqueta: 'Google Doc', recurso: 'documento', endpoint: '/herramientas/google-docs', ejemplo: 'https://docs.google.com/document/d/…' },
 }
 const metaTipo = (t: string) => TIPO[t as TipoGoogle] ?? TIPO.google_docs
-const meta = (h: Herramienta) => (h.gestionada ? { Icono: CalendarDots, etiqueta: 'Calendario' } : metaTipo(h.tool_type))
+const meta = (h: Herramienta) => (h.gestionada ? { Icono: CalendarDots, etiqueta: 'Calendario' }
+  : h.tool_type === 'db_externa' ? { Icono: Database, etiqueta: 'Base de datos' } : metaTipo(h.tool_type))
 
 // Mínimos del backend (schemas.py): si no se cumplen, la API responde 422.
 const MIN = { url: 10, nombre: 2, descripcion: 5 }
 
 type Formulario = { modo: 'crear'; tipo: TipoGoogle } | { modo: 'editar'; herramienta: Herramienta }
+/** Asistente de base de datos: `null` = cerrado; `editar: null` = alta nueva. */
+type AsistenteDb = { editar: Herramienta | null } | null
 
 /** Solo http(s): la URL viene de la base y se pinta como enlace. */
 const urlSegura = (u: string | null) => { try { return u && /^https?:$/.test(new URL(u).protocol) ? u : null } catch { return null } }
@@ -46,8 +52,11 @@ export default function Herramientas() {
   const gerencia = esGerencia(usuario)
   const herramientas = useApi<Herramienta[]>('/herramientas')
   const info = useApi<{ correo_servicio: string }>(gerencia ? '/herramientas/info' : null)
+  const infoDb = useApi<DbExternaInfo>(gerencia ? '/herramientas/db-externa/info' : null)
 
   const [formulario, setFormulario] = useState<Formulario | null>(null)
+  const [asistenteDb, setAsistenteDb] = useState<AsistenteDb>(null)
+  const [sinPlanDb, setSinPlanDb] = useState(false)
   const [aviso, setAviso] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [ocupada, setOcupada] = useState<string | null>(null)
@@ -59,6 +68,7 @@ export default function Herramientas() {
   const lista = herramientas.datos ?? []
   const correo = info.datos?.correo_servicio ?? null
   const sinCredencial = gerencia && info.error !== null
+  const db = infoDb.datos
 
   const accion = async (h: Herramienta, fn: () => Promise<string | void>, respaldo: string) => {
     setError(null); setAviso(null); setOcupada(h.tool_key)
@@ -83,7 +93,7 @@ export default function Herramientas() {
     } catch (e) { setError(mensaje(e, 'No se pudo eliminar la herramienta.')) }
     finally { setEliminando(false) }
   }
-  const alGuardar = (m: string) => { setFormulario(null); setError(null); setAviso(m); herramientas.recargar(true); setVersion((v) => v + 1) }
+  const alGuardar = (m: string) => { setFormulario(null); setAsistenteDb(null); setError(null); setAviso(m); herramientas.recargar(true); setVersion((v) => v + 1) }
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 pb-32 pt-8 sm:px-8">
@@ -96,6 +106,11 @@ export default function Herramientas() {
           <button type="button" className="btn-ghost" onClick={() => herramientas.recargar()}><ArrowClockwise size={16} aria-hidden /> Actualizar</button>
           {gerencia && <>
             <button type="button" className="btn-ghost" disabled={sinCredencial} onClick={() => setFormulario({ modo: 'crear', tipo: 'google_docs' })}><FileText size={16} aria-hidden /> Conectar Doc</button>
+            {db?.disponible && (
+              <button type="button" className="btn-ghost" onClick={() => (db.incluida_en_plan ? setAsistenteDb({ editar: null }) : setSinPlanDb(true))}>
+                <Database size={16} aria-hidden /> Conectar base de datos
+              </button>
+            )}
             <button type="button" className="btn-primary" disabled={sinCredencial} onClick={() => setFormulario({ modo: 'crear', tipo: 'google_sheets' })}><Plus size={16} aria-hidden /> Conectar Sheet</button>
           </>}
         </div>
@@ -149,9 +164,11 @@ export default function Herramientas() {
                         <span className="font-semibold">{h.display_name}</span>
                         <Chip>{etiqueta}</Chip>
                         {h.is_enabled ? <Chip tono="ok">activa</Chip> : <Chip tono="aviso">pausada</Chip>}
+                        {h.estado === 'requiere_atencion' && <Chip tono="aviso">requiere atención</Chip>}
                       </div>
                       <p className="break-words text-sm text-ink-muted">{h.description}</p>
                       <p className="flex flex-wrap items-center gap-x-3 gap-y-1 break-all text-xs text-ink-muted">
+                        {h.tool_type === 'db_externa' && <span>{MOTORES[h.motor as keyof typeof MOTORES]?.nombre ?? h.motor} · {h.host} · {h.base} · {h.n_objetos ?? 0} {h.n_objetos === 1 ? 'objeto' : 'objetos'}</span>}
                         {enlace ? <a href={enlace} target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline-offset-2 hover:underline">{h.nombre_documento ?? 'abrir documento'} ↗</a>
                           : h.nombre_documento && <span>{h.nombre_documento}</span>}
                         <span>clave {h.tool_key}</span>
@@ -160,8 +177,8 @@ export default function Herramientas() {
                     </div>
                     {gerencia && (
                       <div className="flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto">
-                        {!h.gestionada && <button type="button" className="btn-ghost min-h-9 px-3" disabled={trabajando} onClick={() => verificar(h)} title="Comprobar que el documento sigue compartido"><ArrowClockwise size={14} aria-hidden /> Verificar</button>}
-                        <button type="button" className="btn-ghost size-9 px-0" disabled={trabajando} onClick={() => setFormulario({ modo: 'editar', herramienta: h })} aria-label={`Editar ${h.display_name}`}><PencilSimple size={15} aria-hidden /></button>
+                        {!h.gestionada && <button type="button" className="btn-ghost min-h-9 px-3" disabled={trabajando} onClick={() => verificar(h)} title={h.tool_type === 'db_externa' ? 'Volver a probar la conexión' : 'Comprobar que el documento sigue compartido'}><ArrowClockwise size={14} aria-hidden /> Verificar</button>}
+                        <button type="button" className="btn-ghost size-9 px-0" disabled={trabajando} onClick={() => (h.tool_type === 'db_externa' ? setAsistenteDb({ editar: h }) : setFormulario({ modo: 'editar', herramienta: h }))} aria-label={`Editar ${h.display_name}`}><PencilSimple size={15} aria-hidden /></button>
                         <button type="button" className="btn-ghost min-h-9 px-3" disabled={trabajando} onClick={() => alternar(h)}>{h.is_enabled ? 'Pausar' : 'Activar'}</button>
                         {!h.gestionada && <button type="button" className="btn-ghost size-9 px-0 hover:text-danger" disabled={trabajando} onClick={() => setAEliminar(h)} aria-label={`Eliminar ${h.display_name}`}><Trash size={15} aria-hidden /></button>}
                       </div>
@@ -178,6 +195,16 @@ export default function Herramientas() {
         {usuario?.role === 'owner' && <ConsumoCreditos herramientas={lista.map((h) => ({ clave: h.tool_key, nombre: h.display_name }))} />}
       </div>
 
+      {asistenteDb && db && (
+        <ConectarBaseDatos info={db} editar={asistenteDb.editar} nombreNegocio={usuario?.nombre_negocio ?? ''} onCerrar={() => setAsistenteDb(null)} onGuardado={(m) => { alGuardar(m); infoDb.recargar(true) }} />
+      )}
+      <Dialogo abierto={sinPlanDb} titulo="Conectar tu base de datos" onCerrar={() => setSinPlanDb(false)}>
+        <p className="mt-2 text-sm text-ink-muted">Esta herramienta no está incluida en tu plan actual. Mejora tu plan para que tu agente pueda consultar tu propia base de datos.</p>
+        <div className="mt-5 flex justify-end gap-2">
+          <button type="button" className="btn-ghost" onClick={() => setSinPlanDb(false)}>Cerrar</button>
+          <Link className="btn-primary" to="/portal/cuenta?vista=suscripcion">Ver planes</Link>
+        </div>
+      </Dialogo>
       {formulario && <FormularioHerramienta formulario={formulario} correoServicio={correo} onCerrar={() => setFormulario(null)} onGuardado={alGuardar} />}
 
       <Dialogo abierto={aEliminar !== null} titulo={`¿Eliminar "${aEliminar?.display_name ?? ''}"?`} onCerrar={() => setAEliminar(null)} ocupado={eliminando}>

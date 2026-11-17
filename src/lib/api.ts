@@ -27,10 +27,13 @@ export const onSesionExpirada = (fn: () => void) => { alCerrarSesion = fn }
 export class ApiError extends Error {
   status: number
   retryAfter?: number
-  constructor(status: number, message: string, retryAfter?: number) {
+  /** `detail.codigo` cuando la API lo manda ({ codigo, mensaje }): para decidir qué mostrar sin parsear el texto. */
+  codigo?: string
+  constructor(status: number, message: string, retryAfter?: number, codigo?: string) {
     super(message)
     this.status = status
     this.retryAfter = retryAfter
+    this.codigo = codigo
   }
 }
 
@@ -94,7 +97,9 @@ export async function api<T>(ruta: string, opciones: Opciones = {}, reintento = 
   if (!res.ok) {
     const cuerpo = await res.json().catch(() => null)
     const retry = Number(res.headers.get('Retry-After')) || undefined
-    throw new ApiError(res.status, mensajeDeError(cuerpo, res.status), retry)
+    const detalle = (cuerpo as { detail?: { codigo?: unknown } } | null)?.detail
+    const codigo = detalle && typeof detalle === 'object' && typeof detalle.codigo === 'string' ? detalle.codigo : undefined
+    throw new ApiError(res.status, mensajeDeError(cuerpo, res.status), retry, codigo)
   }
   if (res.status === 204) return undefined as T
   if (blob) return (await res.blob()) as T

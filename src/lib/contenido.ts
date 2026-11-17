@@ -22,11 +22,11 @@ export const PAQUETES_CREDITOS = [
 export const FAQ = [
   {
     q: '¿Qué es un crédito?',
-    a: 'Cada vez que el agente usa una herramienta (cotizar, agendar, consultar inventario, registrar un lead) consume un crédito. Los créditos del plan se renuevan cada mes y no se acumulan.',
+    a: 'Cada vez que el agente usa una herramienta (cotizar, agendar, consultar inventario, registrar una conversación) consume un crédito. Los créditos del plan se renuevan cada mes y no se acumulan.',
   },
   {
-    q: '¿Qué pasa si me quedo sin créditos o sin leads en el mes?',
-    a: 'Puedes comprar paquetes de créditos extra, que no vencen. Si llegas al tope de leads, el agente deja de registrar nuevos hasta el siguiente ciclo mensual.',
+    q: '¿Qué pasa si me quedo sin créditos o sin conversaciones en el mes?',
+    a: 'Puedes comprar paquetes de créditos extra, que no vencen. Si llegas al tope de conversaciones, el agente deja de registrar nuevos hasta el siguiente ciclo mensual.',
   },
   {
     q: '¿En qué canales atiende el agente?',

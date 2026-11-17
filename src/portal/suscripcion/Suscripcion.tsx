@@ -13,7 +13,7 @@ import { Aviso, Chip } from '../ui'
 
 const LEYENDA_NETOS = 'IVA incluido'
 const LEYENDA_CREDITOS = 'Créditos: se usan al ejecutar herramientas y funciones del agente de IA.'
-const LEYENDA_LEADS = 'Leads: son las conversaciones recibidas a través de Meta.'
+const LEYENDA_LEADS = 'Conversaciones: son las recibidas a través de Meta.'
 
 const ESTADO_PAGO: Record<EstadoPago, { etiqueta: string; tono: 'ok' | 'aviso' | 'info' | 'gris' }> = {
   aprobado: { etiqueta: 'Aprobado', tono: 'ok' },
@@ -136,7 +136,7 @@ export function Suscripcion() {
                     {/* Solo cuando el plan lo limita: sin tope definido, "ilimitados" prometería algo no decidido. */}
                     {plan.max_proveedores != null && <Item>Hasta {num(plan.max_proveedores)} proveedores en la agenda</Item>}
                     <Item>{num(plan.creditos_incluidos_mensual)} créditos al mes</Item>
-                    {plan.max_leads_mensuales !== null && <Item>{num(plan.max_leads_mensuales)} leads mensuales</Item>}
+                    {plan.max_leads_mensuales !== null && <Item>{num(plan.max_leads_mensuales)} conversaciones mensuales</Item>}
                   </ul>
                   <ul className="space-y-1.5 border-t border-line pt-3 text-sm" aria-label="Herramientas">
                     {HERRAMIENTAS.map((h) => <Item key={h.columna} incluida={Boolean(plan[h.columna])}>{h.nombre}</Item>)}

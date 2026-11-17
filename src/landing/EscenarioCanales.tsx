@@ -28,7 +28,7 @@ export function EscenarioCanales() {
       </div>
       <div style={{ minWidth: '0', display: 'flex', flexDirection: 'column', gap: '3px' }}>
       <h3 style={{ margin: '0', fontSize: '20px', lineHeight: '1.2', fontWeight: '800' }}>Instagram</h3>
-      <p style={{ margin: '0', fontSize: '15px', lineHeight: '1.35', color: '#46506E' }}>Cada mensaje, un lead</p>
+      <p style={{ margin: '0', fontSize: '15px', lineHeight: '1.35', color: '#46506E' }}>Cada mensaje, una conversación</p>
       <span style={{ alignSelf: 'flex-start', marginTop: '5px', padding: '3px 10px', borderRadius: '999px', background: '#FDE7F4', color: '#A3126F', fontSize: '12px', fontWeight: '700' }}>Cuenta profesional + Meta</span>
       </div>
       </article>
@@ -101,7 +101,7 @@ export function EscenarioCanales() {
       <span style={{ fontSize: '15px', fontWeight: '700' }}>Luis R.</span>
       <span style={{ fontSize: '14px', color: '#46506E', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Vi su publicación de ayer</span>
       </div>
-      <span style={{ flex: '0 0 auto', padding: '4px 10px', borderRadius: '999px', background: '#FDE7F4', color: '#A3126F', fontSize: '12px', fontWeight: '700' }}>Nuevo lead</span>
+      <span style={{ flex: '0 0 auto', padding: '4px 10px', borderRadius: '999px', background: '#FDE7F4', color: '#A3126F', fontSize: '12px', fontWeight: '700' }}>Nueva conversación</span>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '10px 0' }}>

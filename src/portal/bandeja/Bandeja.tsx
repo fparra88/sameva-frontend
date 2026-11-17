@@ -1,5 +1,5 @@
 import { Tray } from '@phosphor-icons/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../../lib/auth'
 import { esDeNegocio, esVendedor } from '../../lib/roles'
@@ -60,11 +60,18 @@ export default function Bandeja() {
   useEvento<{ recurso: string }>('datos_actualizados', (d) => {
     if (d.recurso === 'conversaciones') lista.recargar(true)
   })
-  // Respaldo por si el socket está caído.
+  // Si el socket se cayó y volvió, se pudo perder algún evento: se pide todo de nuevo.
+  useEvento('connect', () => { lista.recargar(true); detalle.recargar(true) })
+  // Respaldo por si el socket no entrega: sondeo suave solo con la pestaña a la vista, y al volver a ella se refresca.
+  const refrescarRef = useRef(() => {})
+  refrescarRef.current = () => { lista.recargar(true); detalle.recargar(true) }
   useEffect(() => {
-    const t = setInterval(() => { lista.recargar(true) }, 60_000)
-    return () => clearInterval(t)
-  }, [lista.recargar]) // eslint-disable-line react-hooks/exhaustive-deps
+    const t = setInterval(() => { if (document.visibilityState === 'visible') refrescarRef.current() }, 20_000)
+    const alVolver = () => { if (document.visibilityState === 'visible') refrescarRef.current() }
+    document.addEventListener('visibilitychange', alVolver)
+    window.addEventListener('focus', alVolver)
+    return () => { clearInterval(t); document.removeEventListener('visibilitychange', alVolver); window.removeEventListener('focus', alVolver) }
+  }, [])
 
   const cambiarFiltros = (f: Filtros) => { setFiltros(f); setLimite(PAGINA) }
   const hayMas = (lista.datos?.length ?? 0) >= limite

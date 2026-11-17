@@ -16,6 +16,6 @@ export function topesPlan(p: Pick<Plan, 'max_vendedores' | 'max_proveedores' | '
   const t = [p.max_vendedores === null ? 'Vendedores ilimitados' : `Hasta ${num(p.max_vendedores)} vendedores`]
   if (p.max_proveedores != null) t.push(`Hasta ${num(p.max_proveedores)} proveedores en la agenda`)
   t.push(`${num(p.creditos_incluidos_mensual)} créditos al mes`)
-  if (p.max_leads_mensuales !== null) t.push(`${num(p.max_leads_mensuales)} leads mensuales`)
+  if (p.max_leads_mensuales !== null) t.push(`${num(p.max_leads_mensuales)} conversaciones mensuales`)
   return t
 }
