@@ -5,7 +5,7 @@ import { Logo } from '../components'
 import { UBICACION, waLink } from '../lib/contenido'
 import { Footer } from './Secciones'
 
-const ACTUALIZADO = '9 de noviembre de 2026'
+const ACTUALIZADO = '18 de noviembre de 2026'
 
 function Pagina({ titulo, children }: { titulo: string; children: ReactNode }) {
   useEffect(() => {
@@ -104,6 +104,7 @@ export function Terminos() {
       <Seccion t="6. Inteligencia artificial">
         <ul>
           <li>El agente genera respuestas automáticas con modelos de IA y puede cometer errores o dar información incompleta. Debes revisar su configuración, mantener actualizada la información de tu negocio y supervisar las conversaciones.</li>
+          <li>Si tu plan incluye el análisis de imágenes, documentos y audios, el agente puede leer lo que te envían tus clientes (fotos, PDF, documentos de Word y notas de voz transcritas a texto). Cada adjunto analizado consume un crédito. La interpretación de un adjunto puede ser inexacta.</li>
           <li>Eres responsable del contenido que configuras (instrucciones, precios, políticas) y de lo que el agente comunique en tu nombre dentro de ese marco.</li>
           <li>Si conectas una base de datos propia, eres responsable de los datos que expones al agente y de tener derecho a usarlos con ese fin. Te recomendamos usar un usuario de solo lectura y, de preferencia, vistas con únicamente lo necesario. El agente solo consulta las tablas, vistas y columnas que elijas, y esa información puede mostrarse a tus clientes en las conversaciones y ser procesada por nuestros proveedores de IA. Registramos tu aceptación y los permisos que detectamos en el usuario que conectaste.</li>
           <li>No uses el agente para decisiones que requieran asesoría profesional (médica, legal, financiera) sin intervención humana.</li>
@@ -211,7 +212,8 @@ export function Privacidad() {
         <p>Solo con proveedores que son necesarios para prestar el Servicio y que tratan los datos bajo nuestras instrucciones:</p>
         <ul>
           <li>Meta (WhatsApp, Instagram, Facebook) y proveedores de mensajería de WhatsApp, para enviar y recibir mensajes.</li>
-          <li>Proveedores de inteligencia artificial, que procesan el texto de las conversaciones para generar respuestas.</li>
+          <li>Proveedores de inteligencia artificial, que procesan el texto de las conversaciones para generar respuestas y, si tu plan lo incluye, las imágenes y documentos que envían tus clientes.</li>
+          <li>Groq, si tu plan incluye el análisis de audios: transcribe a texto las notas de voz de tus clientes. No conservamos el audio, solo su transcripción.</li>
           <li>Stripe, para pagos y cobros.</li>
           <li>Google, si activas las herramientas de Sheets o Docs.</li>
           <li>Tu propia base de datos, si la conectas: consultamos únicamente las tablas, vistas y columnas que elijas y no creamos una copia de ella.</li>

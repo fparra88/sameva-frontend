@@ -22,6 +22,7 @@ const PagoExito = lazy(() => import('./portal/pagos/Retornos').then((m) => ({ de
 const PagoError = lazy(() => import('./portal/pagos/Retornos').then((m) => ({ default: m.PagoError })))
 const CobrosConectar = lazy(() => import('./portal/pagos/Retornos').then((m) => ({ default: m.CobrosConectar })))
 const Reenviar = lazy(() => import('./portal/pagos/Retornos').then((m) => ({ default: m.Reenviar })))
+const Bienvenida = lazy(() => import('./portal/bienvenida/Bienvenida'))
 const Canales = lazy(() => import('./portal/canales/Canales'))
 const GerenciaLayout = lazy(() => import('./gerencia/GerenciaLayout'))
 const Planes = lazy(() => import('./gerencia/Planes'))
@@ -60,6 +61,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="pagos/error" element={<PagoError />} />
               <Route path="cobros/conectar" element={<CobrosConectar />} />
               <Route path="canales" element={<Canales />} />
+              <Route path="bienvenida" element={<Bienvenida />} />
               <Route path="*" element={<Proximamente />} />
             </Route>
             <Route path="/gerencia" element={<GerenciaLayout />}>

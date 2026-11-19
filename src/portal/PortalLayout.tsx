@@ -11,6 +11,8 @@ import { TiempoRealProvider } from '../lib/tiempoReal'
 import { Campana } from './Campana'
 import { ReportarProblema } from './ReportarProblema'
 import { BannerSoporte } from './soporte/BannerSoporte'
+import { BannerSolicitudSoporte } from './soporte/BannerSolicitudSoporte'
+import { BannerPrueba } from './suscripcion/BannerPrueba'
 
 interface Seccion { to: string; label: string; Icono: Icon; roles: 'negocio' | 'todos' | 'operativo' }
 
@@ -39,6 +41,11 @@ export default function PortalLayout() {
 
   const visibles = NAV.filter((s) =>
     s.roles === 'todos' || (s.roles === 'operativo' ? !esProveedor(usuario) : esDeNegocio(usuario)))
+  // Cuenta nueva: primero el cuestionario de bienvenida (de ahí sale la prueba gratuita).
+  // Ajustes queda libre: ahí el dueño responde las solicitudes de soporte (Ajustes → Soporte) y gestiona su cuenta.
+  if (usuario?.onboarding_pendiente && !['/portal/bienvenida', '/portal/cuenta'].includes(location.pathname)) {
+    return <Navigate to="/portal/bienvenida" replace />
+  }
   // Cada rol aterriza en lo suyo: el proveedor en su agenda, el resto en la bandeja.
   if (location.pathname === '/portal') {
     return <Navigate to={esProveedor(usuario) ? '/portal/agenda' : '/portal/bandeja'} replace />
@@ -49,6 +56,8 @@ export default function PortalLayout() {
      <AlertasProvider>
      <div data-tema={tema} className="min-h-dvh bg-bg text-ink">
       {soporte && <BannerSoporte />}
+      <BannerSolicitudSoporte />
+      <BannerPrueba />
       <main id="contenido" className="min-h-dvh">
         <Outlet />
       </main>

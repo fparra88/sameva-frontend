@@ -28,6 +28,8 @@ export interface Mensaje {
   created_at: string
   enviado_por: string | null
   adjuntos: Adjunto[]
+  /** Nota de voz del cliente transcrita por el agente (el audio no se guarda). */
+  transcripcion?: string | null
 }
 
 export interface ConversacionDetalle {
@@ -334,6 +336,11 @@ export interface DbExternaInfo {
   texto_version: string
 }
 
+export interface ArchivoEnvio {
+  id: string; nombre: string; descripcion: string; mime: string; tipo_wa: 'image' | 'document'; bytes: number; created_at: string
+}
+export interface ArchivosEnvioInfo { disponible: boolean; incluida_en_plan: boolean; maximo: number; archivos: ArchivoEnvio[] }
+
 export interface DbColumna { nombre: string; tipo: string; sensible: boolean }
 export interface DbObjeto { objeto: string; esquema: string | null; nombre: string; tipo: 'vista' | 'tabla'; columnas: DbColumna[] }
 export interface DbPermisos { hay: boolean; verificable: boolean; detalle: string[] }
@@ -525,6 +532,8 @@ export interface SuscripcionEstado {
   plan: string | null
   estado_suscripcion: string | null
   fecha_renovacion: string | null
+  /** 'prueba' = prueba gratuita sin tarjeta; 'pago' = plan contratado. */
+  origen: 'pago' | 'prueba' | null
   precio_monthly: string | number | null
   creditos_disponibles: string | number
   creditos_gastados: string | number
@@ -564,4 +573,45 @@ export interface CobroConnect {
   generado_por_agente: boolean
   creado_en: string
   pagado_en: string | null
+}
+
+// ---------- Onboarding (cuestionario de bienvenida + prueba gratuita) ----------
+
+export type GiroNegocio = 'salon_belleza' | 'salud' | 'restaurante' | 'tienda' | 'inmobiliaria' | 'servicios_profesionales' | 'educacion' | 'otro'
+export type TonoAgente = 'cercano' | 'formal' | 'juvenil'
+export type CanalOnboarding = 'whatsapp' | 'instagram' | 'facebook'
+
+export interface OnboardingRespuestas {
+  giro: GiroNegocio
+  descripcion: string
+  agenda_citas: boolean
+  vende_por_chat: boolean
+  visitas_campo: boolean
+  consulta_sistemas: boolean
+  num_vendedores: number
+  num_proveedores: number
+  canales: CanalOnboarding[]
+  tono: TonoAgente
+  horario: string
+}
+
+export interface OnboardingOut {
+  estado: 'sin_iniciar' | 'pendiente' | 'omitido' | 'completado'
+  respuestas: OnboardingRespuestas | null
+  recomendacion: {
+    system_prompt: string
+    modulos: string[]
+    plan: { nombre: string; precio_monthly: string | number; herramientas: string[]; cubre_todo: boolean; faltantes: string[] } | null
+  } | null
+  prueba_disponible: boolean
+  dias_prueba: number
+  prompt_editado: boolean
+}
+
+export interface OnboardingAplicadoOut {
+  prompt_actualizado: boolean
+  modulos_encendidos: string[]
+  modulos_pendientes: string[]
+  prueba: { plan: string; vence: string } | null
+  plan_recomendado: string | null
 }

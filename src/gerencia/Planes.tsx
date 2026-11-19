@@ -10,9 +10,11 @@ import { Aviso, Chip, Dialogo } from '../portal/ui'
 const FAMILIAS: Record<string, string> = {
   calendario: 'Calendario', sql_lectura: 'Consulta SQL', http: 'HTTP', google_sheets: 'Google Sheets', google_docs: 'Google Docs',
   db_externa: 'Base de datos del cliente (MySQL/PostgreSQL)',
+  multimedia: 'Imágenes, documentos y audios (1 crédito por adjunto)',
+  archivos: 'Envío de archivos e imágenes por WhatsApp (1 crédito por envío)',
 }
 /** Opcionales: un plan nuevo NO las trae marcadas (nacen apagadas; se activan a propósito). */
-const FAMILIAS_OPCIONALES = new Set(['db_externa'])
+const FAMILIAS_OPCIONALES = new Set(['db_externa', 'multimedia', 'archivos'])
 const FAMILIAS_ORDEN = Object.keys(FAMILIAS)
 const tope = (v: number | null) => (v === null ? 'Sin tope' : String(v))
 

@@ -1,4 +1,4 @@
-import { ArrowLeft, Paperclip, Robot, SidebarSimple, User, Warning, X } from '@phosphor-icons/react'
+import { ArrowLeft, Microphone, Paperclip, Robot, SidebarSimple, User, Warning, X } from '@phosphor-icons/react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { CanalBadge, Spinner } from '../../components'
@@ -24,7 +24,12 @@ function Burbuja({ m, conversacionId }: { m: Mensaje; conversacionId: string }) 
         {m.adjuntos.length > 0 && (
           <div className="mb-1 space-y-1">{m.adjuntos.map((a) => <AdjuntoVista key={a.id} conversacionId={conversacionId} a={a} />)}</div>
         )}
-        {m.content.trim() !== '' && <p className="whitespace-pre-wrap break-words">{m.content}</p>}
+        {m.transcripcion ? (
+          <div>
+            <p className="mb-0.5 flex items-center gap-1 text-[11px] font-semibold opacity-80"><Microphone size={11} aria-hidden /> Nota de voz · transcripción</p>
+            <p className="whitespace-pre-wrap break-words">{m.transcripcion}</p>
+          </div>
+        ) : m.content.trim() !== '' && <p className="whitespace-pre-wrap break-words">{m.content}</p>}
         <time dateTime={m.created_at} className="mt-1 block text-right text-[10px] opacity-70">{hora(m.created_at)}</time>
       </div>
     </div>

@@ -103,7 +103,18 @@ export async function api<T>(ruta: string, opciones: Opciones = {}, reintento = 
   }
   if (res.status === 204) return undefined as T
   if (blob) return (await res.blob()) as T
-  return res.json() as Promise<T>
+  return JSON.parse(await res.text(), reviveFechasUtc) as T
+}
+
+/**
+ * Las columnas TIMESTAMP sin zona del servidor (UTC) llegan como
+ * "2026-01-05T18:30:00" sin sufijo, y el navegador las leería como hora local
+ * (sin convertir). Se marcan como UTC para que `new Date()` las pase a la hora
+ * local del navegador. Las que ya traen "Z" u offset, o son solo fecha, no cambian.
+ */
+const ISO_SIN_ZONA = /^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/
+export function reviveFechasUtc(_k: string, v: unknown): unknown {
+  return typeof v === 'string' && ISO_SIN_ZONA.test(v) ? `${v.replace(' ', 'T')}Z` : v
 }
 
 // ---------- Contratos usados por el portal (ver schemas.py de la API) ----------

@@ -12,6 +12,7 @@ import { esGerencia } from '../../lib/roles'
 import { useApi } from '../../lib/useApi'
 import { Aviso, Chip, Dialogo } from '../ui'
 import { ConectarBaseDatos } from './ConectarBaseDatos'
+import { ArchivosEnvio } from './ArchivosEnvio'
 import { ConsumoCreditos } from './ConsumoCreditos'
 import { MOTORES } from './guiaDb'
 
@@ -190,6 +191,8 @@ export default function Herramientas() {
           )}
 
         {lista.length > 0 && <ActivacionPorNumero key={version} soloLectura={!gerencia} />}
+
+        <ArchivosEnvio gerencia={gerencia} />
 
         {/* Auditoría de créditos: solo el propietario (el backend también lo exige). */}
         {usuario?.role === 'owner' && <ConsumoCreditos herramientas={lista.map((h) => ({ clave: h.tool_key, nombre: h.display_name }))} />}

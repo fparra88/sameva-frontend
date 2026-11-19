@@ -87,9 +87,9 @@ export function Suscripcion() {
       {!gerencia && <Aviso tipo="info">Solo el dueño del negocio puede contratar un plan o comprar créditos.</Aviso>}
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Dato etiqueta="Plan" valor={s?.plan ?? '—'} tono={s?.estado_suscripcion === 'activa' ? 'ok' : undefined} pista={s?.precio_monthly ? `${pesos(s.precio_monthly)} / mes` : 'sin contratar'} />
+        <Dato etiqueta="Plan" valor={s?.plan ?? '—'} tono={s?.estado_suscripcion === 'activa' ? 'ok' : undefined} pista={s?.origen === 'prueba' ? 'prueba gratuita · sin cargo' : s?.precio_monthly ? `${pesos(s.precio_monthly)} / mes` : 'sin contratar'} />
         <Dato etiqueta="Estado" valor={s?.estado_suscripcion ?? '—'} tono={s?.estado_suscripcion === 'activa' ? 'ok' : s?.estado_suscripcion === 'pausada' ? 'aviso' : undefined}
-          pista={!s?.fecha_renovacion ? '—' : s.cancela_al_vencer ? `cancelada · vigente hasta ${fechaCorta(s.fecha_renovacion)}` : s.suscripcion_recurrente ? `se cobra sola el ${fechaCorta(s.fecha_renovacion)}` : `renueva ${fechaCorta(s.fecha_renovacion)}`} />
+          pista={!s?.fecha_renovacion ? '—' : s.cancela_al_vencer ? `cancelada · vigente hasta ${fechaCorta(s.fecha_renovacion)}` : s.suscripcion_recurrente ? `se cobra sola el ${fechaCorta(s.fecha_renovacion)}` : `${s.origen === 'prueba' ? (s.estado_suscripcion === 'activa' ? 'la prueba termina' : 'la prueba terminó')+' el' : 'renueva'} ${fechaCorta(s.fecha_renovacion)}`} />
         <Dato etiqueta="Créditos" valor={s ? num(s.creditos_disponibles) : '—'} tono={s && Number(s.creditos_disponibles) > 0 ? 'ok' : 'aviso'} pista="disponibles" />
         <Dato etiqueta="Consumidos" valor={s ? num(s.creditos_gastados) : '—'} pista="histórico" />
       </div>
@@ -120,7 +120,7 @@ export function Suscripcion() {
         {catalogo.cargando && !catalogo.datos ? <div className="py-6 text-center"><Spinner /></div> : (
           <div className="grid gap-3 md:grid-cols-3">
             {(catalogo.datos?.planes ?? []).map((plan) => {
-              const esActual = s?.plan === plan.nombre && s?.estado_suscripcion === 'activa'
+              const esActual = s?.plan === plan.nombre && s?.estado_suscripcion === 'activa' && s?.origen !== 'prueba'
               const boton = botonPlan(esActual, s?.suscripcion_recurrente ?? false, s?.cancela_al_vencer ?? false, gerencia)
               const clave = `plan:${plan.nombre}`
               return (
