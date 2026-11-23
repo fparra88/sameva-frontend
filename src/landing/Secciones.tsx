@@ -1,11 +1,12 @@
 import {
   ArrowRight, ArrowsLeftRight, Buildings, CalendarCheck, ChartLineUp, Check, CreditCard, Cube,
-  Handshake, Lightning, QrCode, Quotes, Receipt, Robot, Tray,
-  UserPlus, UsersThree, WhatsappLogo, X, type Icon,
+  Handshake, Quotes, Receipt, Robot, Tray,
+  UsersThree, WhatsappLogo, X, type Icon,
 } from '@phosphor-icons/react'
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Logo } from '../components'
+import './ComoFunciona.css'
 import { EscenarioCanales } from './EscenarioCanales'
 import { FAQ, PAQUETES_CREDITOS, UBICACION, formatoMXN, waLink } from '../lib/contenido'
 import { HERRAMIENTAS, topesPlan } from '../lib/planes'
@@ -39,39 +40,117 @@ export function Canales() {
   )
 }
 
-/* ------------------------------------------------------- Integración fácil */
+/* ------------------------------------------------------- Cómo funciona */
 
-const PASOS: { Icono: Icon; titulo: string; texto: string }[] = [
-  { Icono: UserPlus, titulo: 'Crea tu cuenta', texto: 'Registra tu negocio con tu correo. Te mandamos un código para confirmar y listo.' },
-  { Icono: QrCode, titulo: 'Conecta tus canales', texto: 'Vincula WhatsApp con QR o API, y Facebook e Instagram con tu inicio de sesión de Meta.' },
-  { Icono: Robot, titulo: 'Configura tu agente', texto: 'Responde un cuestionario corto: qué vendes, precios, horarios y tono. El agente arranca con eso.' },
-  { Icono: Lightning, titulo: 'Empieza a vender', texto: 'El agente atiende 24/7. Tú supervisas, tomas conversaciones cuando quieras y ves resultados.' },
-]
+const IconoCheck = ({ s, w }: { s: number; w: number }) => (
+  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={w} strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5 9-10" /></svg>
+)
 
 export function ComoFunciona() {
   return (
-    <section id="como-funciona" aria-labelledby="como-t" className="scroll-mt-20 bg-ink py-20 text-white md:py-28">
-      <div className="container-page">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 id="como-t" className="text-3xl font-bold sm:text-4xl">Operando en días, no en meses</h2>
-          <p className="mt-4 text-lg text-white/75">
-            No necesitas equipo técnico ni cambiar cómo trabajas. Nuestro equipo te acompaña en la implementación.
-          </p>
-        </div>
-        <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {PASOS.map(({ Icono, titulo, texto }, i) => (
-            <li key={titulo} className="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <div className="flex items-center justify-between">
-                <span className="grid size-11 place-items-center rounded-xl bg-primary text-on-primary"><Icono size={22} aria-hidden /></span>
-                <span className="font-display text-3xl font-bold text-white/20" aria-hidden>{String(i + 1).padStart(2, '0')}</span>
+    <section id="como-funciona" aria-labelledby="cf-title" className="scroll-mt-20">
+      <div className="cf-wrap">
+        <header className="cf-head">
+          <h2 id="cf-title">Tu negocio evoluciona. Nosotros te acompañamos.</h2>
+          <p className="cf-sub">Simplificamos la implementación y te guiamos durante todo el proceso.</p>
+        </header>
+
+        <ol className="cf-steps">
+          <li className="cf-step">
+            <span className="cf-node" aria-hidden="true">1</span>
+            <div className="cf-panel" aria-hidden="true">
+              <div className="cf-field">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 7 8 6 8-6" /></svg>
+                <span>tu@negocio.com</span>
               </div>
-              <h3 className="mt-5 text-lg font-semibold">
-                <span className="sr-only">Paso {i + 1}: </span>{titulo}
-              </h3>
-              <p className="mt-2 text-white/75">{texto}</p>
-            </li>
-          ))}
+              <div className="cf-code">
+                <b className="on">4</b><b className="on">8</b><b className="on">2</b><b className="on">9</b><b className="cur"></b><b></b>
+              </div>
+              <div className="cf-btn"><IconoCheck s={16} w={3} />Confirmar</div>
+            </div>
+            <h3>Crea tu cuenta</h3>
+            <p>Tu correo y un código. Nada más.</p>
+          </li>
+
+          <li className="cf-step">
+            <span className="cf-node" aria-hidden="true">2</span>
+            <div className="cf-panel hubpanel" aria-hidden="true">
+              <svg className="cf-hub" viewBox="0 0 260 190" role="img" aria-label="">
+                <defs>
+                  <radialGradient id="cf-glow" cx="50%" cy="50%" r="50%"><stop offset="0" stopColor="#2d6df0" stopOpacity=".55" /><stop offset="1" stopColor="#2d6df0" stopOpacity="0" /></radialGradient>
+                </defs>
+                <circle cx="205" cy="95" r="58" fill="url(#cf-glow)" />
+                <g fill="none" stroke="#6ea2ff" strokeWidth="2" strokeLinecap="round">
+                  <path className="flow" d="M114 35 C140 35 140 95 173 95" />
+                  <path className="flow" d="M114 95 H173" />
+                  <path className="flow" d="M114 155 C140 155 140 95 173 95" />
+                </g>
+                <circle cx="205" cy="95" r="32" fill="#2d6df0" />
+                <polygon points="212,78 195,99 205,99 198,113 216,90 206,90" fill="#fff" />
+                <g fontFamily="Plus Jakarta Sans, system-ui, sans-serif" fontSize="11.5" fontWeight="700" fill="#f3f7ff">
+                  <rect x="10" y="18" width="104" height="34" rx="17" fill="#0a1a3f" stroke="#2a427f" />
+                  <circle cx="28" cy="35" r="10" fill="#17306f" />
+                  <path d="M23.5 38.5 25 34a5 5 0 1 1 2 2z" fill="none" stroke="#6ea2ff" strokeWidth="1.6" strokeLinejoin="round" />
+                  <text x="44" y="39">WhatsApp</text>
+                  <rect x="10" y="78" width="104" height="34" rx="17" fill="#0a1a3f" stroke="#2a427f" />
+                  <circle cx="28" cy="95" r="10" fill="#17306f" />
+                  <rect x="23" y="90" width="10" height="10" rx="3" fill="none" stroke="#6ea2ff" strokeWidth="1.6" />
+                  <circle cx="28" cy="95" r="2.3" fill="none" stroke="#6ea2ff" strokeWidth="1.6" />
+                  <text x="44" y="99">Instagram</text>
+                  <rect x="10" y="138" width="104" height="34" rx="17" fill="#0a1a3f" stroke="#2a427f" />
+                  <circle cx="28" cy="155" r="10" fill="#17306f" />
+                  <text x="24.6" y="160" fontSize="14" fill="#6ea2ff">f</text>
+                  <text x="44" y="159">Facebook</text>
+                </g>
+              </svg>
+            </div>
+            <h3>Conecta tus canales</h3>
+            <p>WhatsApp con QR o API. Facebook e Instagram con tu cuenta de Meta.</p>
+          </li>
+
+          <li className="cf-step">
+            <span className="cf-node" aria-hidden="true">3</span>
+            <div className="cf-panel" aria-hidden="true">
+              {([['Productos', '88%'], ['Precios', '64%'], ['Horarios', '76%']] as const).map(([et, w]) => (
+                <div className="cf-row" key={et}>
+                  <span className="cf-check"><IconoCheck s={12} w={4} /></span>
+                  <label>{et}</label>
+                  <div className="cf-bar" style={{ '--w': w } as React.CSSProperties}></div>
+                </div>
+              ))}
+              <div className="cf-seg"><span>Formal</span><span className="sel">Cercano</span><span>Divertido</span></div>
+            </div>
+            <h3>Configura tu agente</h3>
+            <p>Cuéntale qué vendes, a qué precio, cuándo atiendes y cómo hablar.</p>
+          </li>
+
+          <li className="cf-step">
+            <span className="cf-node" aria-hidden="true">4</span>
+            <div className="cf-panel" aria-hidden="true">
+              <div className="cf-chat">
+                <div className="cf-msg in">¿Tienen talla M?</div>
+                <div className="cf-msg out">Sí, quedan 3. ¿Te lo enviamos hoy?</div>
+                <div className="cf-typing"><i></i><i></i><i></i></div>
+              </div>
+              <div className="cf-foot">
+                <div className="cf-spark">
+                  {['30%', '42%', '38%', '58%', '72%', '100%'].map(h => <i key={h} style={{ '--h': h } as React.CSSProperties}></i>)}
+                </div>
+                <span className="cf-pill"><i></i>Atendiendo 24/7</span>
+              </div>
+            </div>
+            <h3>Empieza a vender</h3>
+            <p>Tu agente atiende todo el día. Tú supervisas y tomas el control cuando quieras.</p>
+          </li>
         </ol>
+
+        <div className="cf-cta">
+          <Link className="btn" to="/portal/registro">
+            Crear cuenta
+            <ArrowRight size={18} weight="bold" aria-hidden />
+          </Link>
+          <span>Empieza hoy y conecta tu primer canal.</span>
+        </div>
       </div>
     </section>
   )
@@ -157,15 +236,15 @@ export function Caso() {
         <div className="card grid overflow-hidden md:grid-cols-[1.3fr_1fr]">
           <div className="p-8 md:p-12">
             <p className="eyebrow">Caso de éxito</p>
-            <h2 id="caso-t" className="mt-3 text-2xl font-bold sm:text-3xl">Zeutica: ventas 24 horas por WhatsApp</h2>
-            <p className="mt-3 text-ink-muted">Distribuidora de materiales desechables para la industria farmacéutica, alimentaria y de manufactura.</p>
+            <h2 id="caso-t" className="mt-3 text-2xl font-bold sm:text-3xl">Casa Rogelio: ventas 24 horas por WhatsApp</h2>
+            <p className="mt-3 text-ink-muted">Fabrica de muebles finos para el hogar.</p>
             <blockquote className="mt-8 border-l-4 border-primary pl-5">
               <Quotes size={28} weight="fill" className="text-primary/30" aria-hidden />
               <p className="mt-2 text-lg text-ink">
                 Me ayudó a enfocar mis esfuerzos y tiempo en buscar la expansión de mi empresa, delegando gran parte de la
                 carga de atención a clientes y ventas a nuestro agente de IA.
               </p>
-              <footer className="mt-3 text-sm font-semibold text-ink-muted">— Zeutica</footer>
+              <footer className="mt-3 text-sm font-semibold text-ink-muted">— Casa Rogelio</footer>
             </blockquote>
           </div>
           <ul className="grid content-center gap-6 bg-primary p-8 text-on-primary md:p-12">
@@ -395,6 +474,7 @@ export function Footer() {
         <nav aria-label="Legal" className="flex flex-wrap gap-x-5 gap-y-1">
           <Link to="/terminosycondiciones" className="hover:text-ink hover:underline">Términos y condiciones</Link>
           <Link to="/avisodeprivacidad" className="hover:text-ink hover:underline">Aviso de privacidad</Link>
+          <Link to="/eliminacion-datos" className="hover:text-ink hover:underline">Eliminación de datos</Link>
         </nav>
       </div>
     </footer>

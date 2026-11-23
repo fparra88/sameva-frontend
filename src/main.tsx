@@ -10,6 +10,7 @@ import './index.css'
 const PortalLayout = lazy(() => import('./portal/PortalLayout'))
 const Terminos = lazy(() => import('./landing/Legal').then((m) => ({ default: m.Terminos })))
 const Privacidad = lazy(() => import('./landing/Legal').then((m) => ({ default: m.Privacidad })))
+const EliminacionDatos = lazy(() => import('./landing/Legal').then((m) => ({ default: m.EliminacionDatos })))
 const Entrar = lazy(() => import('./portal/Acceso').then((m) => ({ default: m.Entrar })))
 const Registro = lazy(() => import('./portal/Acceso').then((m) => ({ default: m.Registro })))
 const Bandeja = lazy(() => import('./portal/bandeja/Bandeja'))
@@ -47,6 +48,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<Landing />} />
             <Route path="/terminosycondiciones" element={<Terminos />} />
             <Route path="/avisodeprivacidad" element={<Privacidad />} />
+            <Route path="/eliminacion-datos" element={<EliminacionDatos />} />
             <Route path="/portal/entrar" element={<Entrar />} />
             <Route path="/portal/registro" element={<Registro />} />
             <Route path="/portal" element={<PortalLayout />}>

@@ -1,0 +1,112 @@
+/* Sección «Cómo funciona» (landing). Todo bajo #como-funciona. */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+#como-funciona {
+  --bg: #0a1a3f;
+  --surface: #11245a;
+  --surface-2: #17306f;
+  --line: #2a427f;
+  --text: #f3f7ff;
+  --muted: #9db0d9;
+  --accent: #2d6df0;
+  --accent-2: #6ea2ff;
+  --ok: #34d399;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+#como-funciona { background: var(--bg); padding: 88px 24px 96px; font-family: var(--font); color: var(--text); position: relative; overflow: hidden; }
+#como-funciona::before { content: ""; position: absolute; inset: -20% 0 auto 0; height: 420px; background: radial-gradient(60% 100% at 50% 0%, rgba(45,109,240,.28), transparent 70%); pointer-events: none; }
+#como-funciona .cf-wrap { position: relative; max-width: 1180px; margin: 0 auto; }
+
+#como-funciona .cf-head { text-align: center; max-width: 640px; margin: 0 auto 64px; }
+#como-funciona .cf-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-2); }
+#como-funciona .cf-eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 0 4px rgba(110,162,255,.2); }
+#como-funciona h2 { margin: 14px 0 14px; font-size: clamp(30px, 4.4vw, 46px); line-height: 1.1; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+#como-funciona .cf-sub { margin: 0; font-size: 18px; line-height: 1.5; color: var(--muted); text-wrap: balance; }
+
+#como-funciona .cf-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+#como-funciona .cf-step { position: relative; padding-top: 64px; min-width: 0; }
+
+/* nodo + línea */
+#como-funciona .cf-node { position: absolute; top: 0; left: 0; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 17px; background: var(--accent); color: #fff; box-shadow: 0 0 0 6px rgba(45,109,240,.22), 0 8px 24px rgba(45,109,240,.45); z-index: 1; }
+#como-funciona .cf-step:not(:last-child)::before { content: ""; position: absolute; top: 21px; left: 52px; width: calc(100% + 28px - 60px); height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--accent-2) 0 35%, rgba(110,162,255,.25) 35% 100%); background-size: 200% 100%; animation: cf-flow 3.2s linear infinite; }
+@keyframes cf-flow { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* tarjeta ilustrada */
+#como-funciona .cf-panel { height: 238px; border-radius: 20px; background: linear-gradient(160deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); padding: 18px; display: flex; flex-direction: column; justify-content: center; gap: 12px; position: relative; overflow: hidden; transition: transform .25s ease, border-color .25s ease; }
+#como-funciona .cf-step:hover .cf-panel { transform: translateY(-4px); border-color: var(--accent-2); }
+#como-funciona .cf-step h3 { margin: 20px 0 6px; font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+#como-funciona .cf-step p { margin: 0; font-size: 15.5px; line-height: 1.45; color: var(--muted); }
+
+/* --- 1: cuenta --- */
+#como-funciona .cf-field { display: flex; align-items: center; gap: 10px; background: rgba(5,14,40,.55); border: 1px solid var(--line); border-radius: 12px; padding: 11px 12px; font-size: 13.5px; color: var(--text); }
+#como-funciona .cf-field svg { flex: none; color: var(--accent-2); }
+#como-funciona .cf-field span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#como-funciona .cf-code { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+#como-funciona .cf-code b { height: 38px; border-radius: 9px; display: grid; place-items: center; font-size: 17px; font-weight: 700; background: rgba(5,14,40,.55); border: 1px solid var(--line); }
+#como-funciona .cf-code b.on { border-color: var(--accent-2); color: var(--accent-2); }
+#como-funciona .cf-code b.cur { border-color: var(--accent-2); position: relative; }
+#como-funciona .cf-code b.cur::after { content: ""; width: 2px; height: 18px; background: var(--accent-2); animation: cf-blink 1s steps(1) infinite; }
+@keyframes cf-blink { 50% { opacity: 0; } }
+#como-funciona .cf-btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: 40px; border-radius: 11px; background: var(--accent); font-size: 14px; font-weight: 700; }
+
+/* --- 2: canales --- */
+#como-funciona .cf-hub { width: 100%; height: 100%; }
+#como-funciona .cf-hub .flow { stroke-dasharray: 5 6; animation: cf-dash 1.4s linear infinite; }
+@keyframes cf-dash { to { stroke-dashoffset: -22; } }
+#como-funciona .cf-panel.hubpanel { padding: 8px 6px; }
+
+/* --- 3: agente --- */
+#como-funciona .cf-row { display: flex; align-items: center; gap: 10px; }
+#como-funciona .cf-check { flex: none; width: 22px; height: 22px; border-radius: 50%; background: rgba(52,211,153,.16); color: var(--ok); display: grid; place-items: center; }
+#como-funciona .cf-row label { flex: none; width: 74px; font-size: 13px; font-weight: 600; }
+#como-funciona .cf-bar { flex: 1; height: 8px; border-radius: 8px; background: rgba(157,176,217,.22); position: relative; overflow: hidden; }
+#como-funciona .cf-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w); border-radius: 8px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+#como-funciona .cf-seg { display: grid; grid-template-columns: repeat(3, 1fr); padding: 4px; border-radius: 12px; background: rgba(5,14,40,.55); border: 1px solid var(--line); font-size: 12.5px; font-weight: 600; text-align: center; }
+#como-funciona .cf-seg span { padding: 7px 0; border-radius: 8px; color: var(--muted); }
+#como-funciona .cf-seg span.sel { background: var(--accent); color: #fff; }
+
+/* --- 4: vender --- */
+#como-funciona .cf-chat { display: flex; flex-direction: column; gap: 8px; }
+#como-funciona .cf-msg { max-width: 82%; padding: 9px 12px; border-radius: 14px; font-size: 13px; line-height: 1.35; }
+#como-funciona .cf-msg.in { align-self: flex-start; background: rgba(5,14,40,.55); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+#como-funciona .cf-msg.out { align-self: flex-end; background: var(--accent); border-bottom-right-radius: 4px; }
+#como-funciona .cf-typing { align-self: flex-end; display: flex; gap: 4px; padding: 8px 12px; border-radius: 14px; background: rgba(45,109,240,.35); }
+#como-funciona .cf-typing i { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: cf-bounce 1.2s ease-in-out infinite; }
+#como-funciona .cf-typing i:nth-child(2) { animation-delay: .15s; }
+#como-funciona .cf-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes cf-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: .6; } 30% { transform: translateY(-4px); opacity: 1; } }
+#como-funciona .cf-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; margin-top: 2px; }
+#como-funciona .cf-spark { display: flex; align-items: flex-end; gap: 4px; height: 34px; }
+#como-funciona .cf-spark i { width: 9px; border-radius: 3px 3px 0 0; background: rgba(110,162,255,.45); height: var(--h); }
+#como-funciona .cf-spark i:last-child { background: var(--ok); }
+#como-funciona .cf-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: rgba(52,211,153,.14); color: var(--ok); }
+#como-funciona .cf-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); animation: cf-pulse 1.8s ease-in-out infinite; }
+@keyframes cf-pulse { 50% { box-shadow: 0 0 0 5px rgba(52,211,153,.0); opacity: .5; } }
+
+#como-funciona .cf-cta { margin-top: 56px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px 24px; }
+#como-funciona .cf-cta a.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 12px; background: var(--accent); color: #fff; font-weight: 700; font-size: 16px; text-decoration: none; box-shadow: 0 10px 30px rgba(45,109,240,.4); transition: transform .2s ease, background .2s ease; }
+#como-funciona .cf-cta a.btn:hover { transform: translateY(-2px); background: #3d7bff; }
+#como-funciona .cf-cta a.btn:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+#como-funciona .cf-cta span { color: var(--muted); font-size: 15px; }
+
+@media (max-width: 1020px) {
+  #como-funciona .cf-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; }
+  #como-funciona .cf-step:nth-child(2)::before { display: none; }
+}
+@media (max-width: 640px) {
+  #como-funciona { padding: 64px 16px 72px; }
+  #como-funciona .cf-head { margin-bottom: 44px; }
+  #como-funciona .cf-steps { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  #como-funciona .cf-step { padding: 0 0 0 64px; }
+  #como-funciona .cf-step:not(:last-child)::before,
+  #como-funciona .cf-step:nth-child(2)::before { display: block; top: 52px; left: 21px; width: 2px; height: calc(100% + 36px - 60px); background: linear-gradient(180deg, var(--accent-2) 0 35%, rgba(110,162,255,.25) 35% 100%); background-size: 100% 200%; animation-name: cf-flow-v; }
+  @keyframes cf-flow-v { from { background-position: 0 100%; } to { background-position: 0 -100%; } }
+  #como-funciona .cf-panel { order: 2; margin-top: 16px; }
+  #como-funciona .cf-step { display: flex; flex-direction: column; }
+  #como-funciona .cf-step h3 { margin-top: 4px; order: 0; }
+  #como-funciona .cf-step p { order: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #como-funciona * { animation: none !important; transition: none !important; }
+}
+#como-funciona, #como-funciona *, #como-funciona *::before, #como-funciona *::after { box-sizing: border-box; }

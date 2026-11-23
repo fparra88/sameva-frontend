@@ -4,10 +4,11 @@ import { Link, Navigate, useLocation, useNavigate, useSearchParams } from 'react
 import { Logo } from '../components'
 import { api, ApiError, type TokenOut, type VerificacionPendienteOut } from '../lib/api'
 import { useAuth } from '../lib/auth'
+import { EscenarioPortal } from './EscenarioPortal'
 
 function Marco({ titulo, subtitulo, children }: { titulo: string; subtitulo: ReactNode; children: ReactNode }) {
   return (
-    <div className="grid min-h-dvh lg:grid-cols-2">
+    <div className="grid min-h-dvh lg:grid-cols-[5fr_7fr]">
       <main className="flex flex-col px-5 py-8 sm:px-10">
         <div className="flex items-center justify-between">
           <Logo />
@@ -25,13 +26,7 @@ function Marco({ titulo, subtitulo, children }: { titulo: string; subtitulo: Rea
           <Link to="/avisodeprivacidad" className="inline-flex min-h-8 items-center hover:text-ink hover:underline">Aviso de privacidad</Link>
         </nav>
       </main>
-      <aside className="relative hidden overflow-hidden bg-ink p-12 text-white lg:flex lg:flex-col lg:justify-end" aria-hidden>
-        <div className="absolute inset-0 bg-[radial-gradient(70%_50%_at_30%_20%,rgba(0,71,167,0.55),transparent_70%)]" />
-        <div className="relative max-w-md">
-          <p className="font-display text-3xl font-bold leading-tight">Tu agente atiende WhatsApp, Instagram y Facebook. Tú lo controlas desde aquí.</p>
-          <p className="mt-4 text-white/70">Bandeja unificada, agenda, CRM y reportes en un solo portal.</p>
-        </div>
-      </aside>
+      <EscenarioPortal />
     </div>
   )
 }

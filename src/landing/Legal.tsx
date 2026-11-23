@@ -172,6 +172,59 @@ export function Terminos() {
   )
 }
 
+/* ------------------------------------------- Eliminación de datos (Meta) */
+
+export function EliminacionDatos() {
+  return (
+    <Pagina titulo="Eliminación de datos de usuario">
+      <p>
+        Esta página explica cómo solicitar la eliminación de los datos que OperativAI trata a través de Facebook, Instagram y WhatsApp (plataformas de Meta).
+        Puedes pedirlo en cualquier momento, sin costo.
+      </p>
+
+      <Seccion t="1. Qué datos podemos tener sobre ti">
+        <ul>
+          <li>Si eres cliente de un negocio que usa OperativAI: tu nombre o identificador en el canal (número de WhatsApp, usuario de Instagram o Facebook), los mensajes y archivos que enviaste, y datos de citas o seguimiento comercial.</li>
+          <li>Si eres dueño o usuario de un negocio en OperativAI: los datos de tu cuenta y los tokens de acceso de las páginas o cuentas de Meta que conectaste.</li>
+        </ul>
+      </Seccion>
+
+      <Seccion t="2. Si eres cliente final de un negocio">
+        <p>Envíanos tu solicitud por <a href={waLink('Hola, quiero solicitar la eliminación de mis datos personales.')} className="font-semibold text-primary hover:underline" target="_blank" rel="noreferrer">WhatsApp</a> indicando:</p>
+        <ul>
+          <li>Tu nombre y el canal por el que escribiste (WhatsApp, Instagram o Facebook).</li>
+          <li>Tu número de teléfono o nombre de usuario en ese canal.</li>
+          <li>El negocio con el que conversaste, si lo recuerdas.</li>
+        </ul>
+        <p>Verificaremos que la solicitud corresponde a tu cuenta y eliminaremos tus mensajes, archivos y datos asociados. También puedes pedirlo directamente al negocio con el que hablaste.</p>
+      </Seccion>
+
+      <Seccion t="3. Si conectaste Facebook, Instagram o WhatsApp a tu negocio">
+        <ul>
+          <li><strong>Desconectar el canal:</strong> en el portal, ve a Canales y desconecta la cuenta. Eliminamos de inmediato los tokens de acceso de Meta guardados.</li>
+          <li><strong>Revocar el acceso desde Meta:</strong> en Facebook, entra a Configuración y privacidad → Configuración → Integraciones de empresa (o «Aplicaciones y sitios web»), selecciona OperativAI y elige «Eliminar». Esto retira nuestro acceso a tu cuenta.</li>
+          <li><strong>Eliminar todo el negocio:</strong> desde Ajustes → Cuenta puedes eliminar tu cuenta; se borran los datos del negocio, sus conversaciones y conexiones.</li>
+        </ul>
+      </Seccion>
+
+      <Seccion t="4. Qué pasa después">
+        <p>
+          Atendemos las solicitudes en un máximo de 20 días hábiles y te confirmamos cuando se completen. Podemos conservar únicamente lo que la ley nos obligue
+          (por ejemplo, registros de pagos y de auditoría). Los mensajes que ya se encuentren en WhatsApp, Instagram o Facebook permanecen en esas plataformas y se
+          eliminan según sus propias políticas.
+        </p>
+      </Seccion>
+
+      <Seccion t="5. Contacto"><Contacto /></Seccion>
+
+      <p className="text-sm text-ink-muted">
+        Consulta también el <Link to="/avisodeprivacidad" className="font-semibold text-primary hover:underline">Aviso de privacidad</Link> y los{' '}
+        <Link to="/terminosycondiciones" className="font-semibold text-primary hover:underline">Términos y condiciones</Link>.
+      </p>
+    </Pagina>
+  )
+}
+
 /* -------------------------------------------------- Aviso de privacidad */
 
 export function Privacidad() {
