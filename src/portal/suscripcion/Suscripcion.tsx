@@ -13,7 +13,7 @@ import { Aviso, Chip } from '../ui'
 
 const LEYENDA_NETOS = 'IVA incluido'
 const LEYENDA_CREDITOS = 'Créditos: se usan al ejecutar herramientas y funciones del agente de IA.'
-const LEYENDA_LEADS = 'Conversaciones: son las recibidas a través de Meta.'
+const LEYENDA_LEADS = 'Llamadas de IA: cada consulta que el agente hace a la inteligencia artificial (una respuesta puede usar varias, por ejemplo si consulta una herramienta). Al llegar al tope del plan en el ciclo, el agente deja de responder y tus clientes reciben un aviso de que un asesor se pondrá en contacto; se reanuda al reiniciarse el ciclo o si subes de plan.'
 
 const ESTADO_PAGO: Record<EstadoPago, { etiqueta: string; tono: 'ok' | 'aviso' | 'info' | 'gris' }> = {
   aprobado: { etiqueta: 'Aprobado', tono: 'ok' },
@@ -136,7 +136,7 @@ export function Suscripcion() {
                     {/* Solo cuando el plan lo limita: sin tope definido, "ilimitados" prometería algo no decidido. */}
                     {plan.max_proveedores != null && <Item>Hasta {num(plan.max_proveedores)} proveedores en la agenda</Item>}
                     <Item>{num(plan.creditos_incluidos_mensual)} créditos al mes</Item>
-                    {plan.max_leads_mensuales !== null && <Item>{num(plan.max_leads_mensuales)} conversaciones mensuales</Item>}
+                    {!!plan.max_leads_mensuales && <Item>{num(plan.max_leads_mensuales)} llamadas de IA al mes</Item>}
                   </ul>
                   <ul className="space-y-1.5 border-t border-line pt-3 text-sm" aria-label="Herramientas">
                     {HERRAMIENTAS.map((h) => <Item key={h.columna} incluida={Boolean(plan[h.columna])}>{h.nombre}</Item>)}

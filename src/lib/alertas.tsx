@@ -142,7 +142,7 @@ export function destinoAlerta(a: Pick<Alerta, 'tipo' | 'datos'>): string | null 
     case 'numero_configuracion_incompleta': return '/portal/agente'
     case 'perfil_incompleto': return '/portal/cuenta'
     case 'solicitud_escritura': return '/portal/cuenta?vista=soporte'
-    case 'cuota_excedida': return '/portal/cuenta?vista=suscripcion'
+    case 'cuota_excedida': case 'limite_llamadas_ia': return '/portal/cuenta?vista=suscripcion'
     default: return null
   }
 }

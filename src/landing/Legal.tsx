@@ -79,14 +79,14 @@ export function Terminos() {
           <li>Bandeja unificada, con la posibilidad de tomar una conversación en cualquier momento y devolverla a la IA.</li>
           <li>Agenda de citas, avisos, CRM y seguimiento de ventas, herramientas conectadas (como Google Sheets y Docs, o una base de datos MySQL o PostgreSQL propia) y cobros mediante enlaces de pago, según el plan contratado.</li>
         </ul>
-        <p>Las funciones disponibles, límites (vendedores, proveedores, créditos y conversaciones mensuales) y precios dependen del plan vigente publicado en el sitio.</p>
+        <p>Las funciones disponibles, límites (vendedores, proveedores, créditos y llamadas de IA al mes) y precios dependen del plan vigente publicado en el sitio.</p>
       </Seccion>
 
       <Seccion t="4. Planes, créditos y pagos">
         <ul>
           <li>Los precios se muestran en pesos mexicanos. Los cobros se procesan con un proveedor de pagos externo (Stripe); no almacenamos los datos completos de tu tarjeta.</li>
           <li>Cada uso de una herramienta por el agente consume créditos. Los créditos del plan se renuevan cada mes y no se acumulan; los paquetes extra no vencen.</li>
-          <li>Al llegar al tope mensual de conversaciones, el agente deja de registrar nuevos hasta el siguiente ciclo.</li>
+          <li>Al llegar al tope de llamadas de IA de tu plan en el ciclo de facturación, el agente deja de responder en todas las conversaciones y tus clientes reciben un aviso de que un asesor se pondrá en contacto. El agente se reanuda al reiniciarse el ciclo; puedes subir de plan para continuar antes.</li>
           <li>Subir de plan surte efecto de inmediato. Bajar de plan o cancelar aplica en el siguiente ciclo mensual. No hay plazo forzoso.</li>
           <li>Salvo que la ley disponga otra cosa, los pagos realizados no son reembolsables por periodos ya iniciados ni por créditos ya consumidos.</li>
           <li>Si un pago falla o la suscripción vence, podemos limitar o suspender funciones hasta regularizarla.</li>

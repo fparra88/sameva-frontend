@@ -40,7 +40,7 @@ const mensaje = (e: unknown, r: string) => (e instanceof ApiError ? e.message : 
 
 /**
  * Cuestionario de bienvenida (API: /onboarding). Al aplicarlo, el servidor arma el prompt del agente y otorga
- * 14 días de prueba del plan recomendado, sin tarjeta. Al vencer, el servicio se pausa hasta que se contrate un plan.
+ * 7 días de prueba del plan recomendado, sin tarjeta. Al vencer, el servicio se pausa hasta que se contrate un plan.
  */
 export default function Bienvenida() {
   const { usuario, recargarUsuario } = useAuth()

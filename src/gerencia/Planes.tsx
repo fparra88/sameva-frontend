@@ -58,7 +58,7 @@ function cuerpoCrear(f: Form, modelos: string[]) {
 
 /**
  * Cuerpo del PATCH: solo lo que cambió (null = "no tocar" en la API). Para quitar un tope se manda 0
- * (números, historial), [] (modelos) o '' (Price de Stripe).
+ * (números, historial, llamadas de IA), [] (modelos) o '' (Price de Stripe).
  */
 function cuerpoEditar(f: Form, p: PlanGerencia, modelos: string[]) {
   const c: Record<string, unknown> = {}
@@ -67,16 +67,17 @@ function cuerpoEditar(f: Form, p: PlanGerencia, modelos: string[]) {
   if (Number(f.precio_monthly) !== Number(p.precio_monthly)) c.precio_monthly = f.precio_monthly
   if (f.precio_annual.trim() && Number(f.precio_annual) !== Number(p.precio_annual)) c.precio_annual = f.precio_annual
   if (Number(f.creditos) !== Number(p.creditos_incluidos_mensual)) c.creditos_incluidos_mensual = f.creditos
-  // La API no distingue "quitar" de "no tocar" en estos tres: vacío los deja como están.
+  // La API no distingue "quitar" de "no tocar" en estos dos: vacío los deja como están.
   const ent = (k: string, v: string, viejo: number | null) => { const n = entero(v); if (n !== null && n !== viejo) c[k] = n }
   ent('max_vendedores', f.max_vendedores, p.max_vendedores)
   ent('max_proveedores', f.max_proveedores, p.max_proveedores)
-  ent('max_leads_mensuales', f.max_leads, p.max_leads_mensuales)
+  // Llamadas de IA: vacío o 0 = sin tope (la API guarda NULL).
   const quitable = (k: string, v: string, viejo: number | null) => {
     const n = entero(v)
     if (n === null && viejo !== null) c[k] = 0
     else if (n !== null && n !== viejo) c[k] = n
   }
+  quitable('max_leads_mensuales', f.max_leads, p.max_leads_mensuales)
   quitable('max_numeros_whatsapp', f.max_numeros, p.max_numeros_whatsapp)
   quitable('historial_maximo', f.historial, p.historial_maximo)
   if (!mismoConjunto(f.modelos, p.modelos_permitidos ?? [])) c.modelos_permitidos = modelos.filter((m) => f.modelos.has(m))
@@ -201,10 +202,10 @@ function EditorPlan({ plan, modelos, onCerrar, onGuardado }: { plan: PlanGerenci
           <legend className="mb-2 text-sm font-semibold">Topes <span className="font-normal text-ink-muted">(vacío = sin tope)</span></legend>
           <Campo id="p-nu" etiqueta="Números de WhatsApp"><input id="p-nu" className="field" inputMode="numeric" value={f.max_numeros} onChange={(e) => set('max_numeros', e.target.value)} /></Campo>
           <Campo id="p-hi" etiqueta="Historial del agente" ayuda={modelos ? `${modelos.historial_min}–${modelos.historial_max} mensajes` : undefined}><input id="p-hi" className="field" inputMode="numeric" value={f.historial} onChange={(e) => set('historial', e.target.value)} /></Campo>
-          <Campo id="p-le" etiqueta="Conversaciones al mes"><input id="p-le" className="field" inputMode="numeric" value={f.max_leads} onChange={(e) => set('max_leads', e.target.value)} /></Campo>
+          <Campo id="p-le" etiqueta="Llamadas de IA al mes" ayuda="Cada respuesta del agente cuenta como una o más llamadas. Vacío o 0 = sin tope."><input id="p-le" className="field" inputMode="numeric" value={f.max_leads} onChange={(e) => set('max_leads', e.target.value)} /></Campo>
           <Campo id="p-ve" etiqueta="Vendedores"><input id="p-ve" className="field" inputMode="numeric" value={f.max_vendedores} onChange={(e) => set('max_vendedores', e.target.value)} /></Campo>
           <Campo id="p-pr" etiqueta="Proveedores"><input id="p-pr" className="field" inputMode="numeric" value={f.max_proveedores} onChange={(e) => set('max_proveedores', e.target.value)} /></Campo>
-          {plan && <p className="self-end text-xs text-ink-muted">En vendedores, proveedores y conversaciones, vacío deja el valor como está.</p>}
+          {plan && <p className="self-end text-xs text-ink-muted">En vendedores y proveedores, vacío deja el valor como está.</p>}
         </fieldset>
 
         <fieldset>

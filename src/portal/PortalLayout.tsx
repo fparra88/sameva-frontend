@@ -13,6 +13,7 @@ import { ReportarProblema } from './ReportarProblema'
 import { BannerSoporte } from './soporte/BannerSoporte'
 import { BannerSolicitudSoporte } from './soporte/BannerSolicitudSoporte'
 import { BannerPrueba } from './suscripcion/BannerPrueba'
+import { BannerLimiteIa } from './suscripcion/BannerLimiteIa'
 
 interface Seccion { to: string; label: string; Icono: Icon; roles: 'negocio' | 'todos' | 'operativo' }
 
@@ -58,6 +59,7 @@ export default function PortalLayout() {
       {soporte && <BannerSoporte />}
       <BannerSolicitudSoporte />
       <BannerPrueba />
+      <BannerLimiteIa />
       <main id="contenido" className="min-h-dvh">
         <Outlet />
       </main>

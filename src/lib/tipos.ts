@@ -540,6 +540,18 @@ export interface SuscripcionEstado {
   suscripcion_recurrente: boolean
   cancela_al_vencer: boolean
   portal_disponible: boolean
+  uso_ia: UsoIa
+}
+
+/** Llamadas de IA del ciclo; `limite: null` = el plan no tiene tope. */
+export interface UsoIa {
+  usadas: number
+  limite: number | null
+  porcentaje: number | null
+  agotado: boolean
+  ciclo_inicio: string | null
+  ciclo_fin: string | null
+  plan_siguiente: string | null
 }
 
 export interface Transaccion {

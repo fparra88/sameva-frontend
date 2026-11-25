@@ -11,11 +11,11 @@ export const HERRAMIENTAS: { columna: keyof Plan; nombre: string }[] = [
 
 const num = (v: string | number) => Number(v).toLocaleString('es-MX')
 
-/** Topes del plan en texto. Misma regla que el portal: null en proveedores/leads = no se menciona. */
+/** Topes del plan en texto. Misma regla que el portal: null en proveedores = no se menciona; llamadas de IA null o 0 = sin tope, no se menciona. */
 export function topesPlan(p: Pick<Plan, 'max_vendedores' | 'max_proveedores' | 'max_leads_mensuales' | 'creditos_incluidos_mensual'>): string[] {
   const t = [p.max_vendedores === null ? 'Vendedores ilimitados' : `Hasta ${num(p.max_vendedores)} vendedores`]
   if (p.max_proveedores != null) t.push(`Hasta ${num(p.max_proveedores)} proveedores en la agenda`)
   t.push(`${num(p.creditos_incluidos_mensual)} créditos al mes`)
-  if (p.max_leads_mensuales !== null) t.push(`${num(p.max_leads_mensuales)} conversaciones mensuales`)
+  if (p.max_leads_mensuales) t.push(`${num(p.max_leads_mensuales)} llamadas de IA al mes`)
   return t
 }

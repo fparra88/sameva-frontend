@@ -25,8 +25,8 @@ export const FAQ = [
     a: 'Cada vez que el agente usa una herramienta (cotizar, agendar, consultar inventario, registrar una conversación) consume un crédito. Los créditos del plan se renuevan cada mes y no se acumulan.',
   },
   {
-    q: '¿Qué pasa si me quedo sin créditos o sin conversaciones en el mes?',
-    a: 'Puedes comprar paquetes de créditos extra, que no vencen. Si llegas al tope de conversaciones, el agente deja de registrar nuevos hasta el siguiente ciclo mensual.',
+    q: '¿Qué pasa si me quedo sin créditos o sin llamadas de IA en el mes?',
+    a: 'Puedes comprar paquetes de créditos extra, que no vencen. Si llegas al tope de llamadas de IA de tu plan, el agente deja de responder en todas las conversaciones y tus clientes reciben un aviso de que un asesor se pondrá en contacto. Se reanuda al reiniciarse el ciclo de facturación, o antes si subes de plan.',
   },
   {
     q: '¿En qué canales atiende el agente?',
