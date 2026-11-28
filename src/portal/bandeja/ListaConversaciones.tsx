@@ -1,4 +1,4 @@
-import { MagnifyingGlass, Robot, User } from '@phosphor-icons/react'
+import { MagnifyingGlass, Robot, User, Warning } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { CANALES, CanalBadge, Spinner } from '../../components'
@@ -97,6 +97,11 @@ export function ListaConversaciones({
                     </span>
                     <span className="block truncate text-sm text-ink-muted">{c.ultimo_mensaje ?? '—'}</span>
                     <span className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px] font-medium">
+                      {c.necesita_humano && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-danger/10 px-2 py-0.5 text-danger">
+                          <Warning size={11} weight="fill" aria-hidden /> Necesita atención de humano
+                        </span>
+                      )}
                       <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ${humano ? 'bg-accent-soft text-accent' : 'bg-muted text-ink-muted'}`}>
                         {humano ? <User size={11} aria-hidden /> : <Robot size={11} aria-hidden />}
                         {humano ? (c.asignado_nombre ?? 'Persona') : 'IA'}

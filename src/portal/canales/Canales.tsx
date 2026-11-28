@@ -5,6 +5,7 @@ import { CanalBadge, infoCanal, Spinner } from '../../components'
 import { api, ApiError } from '../../lib/api'
 import { useAuth } from '../../lib/auth'
 import { fechaCorta, hora } from '../../lib/formato'
+import { META_WA_CONFIG_ID, conectarWhatsAppEmbeddedSignup } from '../../lib/metaWhatsAppEmbeddedSignup'
 import { esDeNegocio, esGerencia } from '../../lib/roles'
 import type {
   CanalSocial, EstadoConnectInstagram, IniciarConnectOut, ListaNumeros, ModoConexion, NumeroWhatsApp, PausarNumeroOut,
@@ -66,6 +67,7 @@ export default function Canales() {
   const [modo, setModo] = useState<ModoConexion>('standard')
   const [iniciando, setIniciando] = useState<'whatsapp' | 'instagram' | null>(null)
   const [confirmando, setConfirmando] = useState(false)
+  const [conectandoMeta, setConectandoMeta] = useState(false)
 
   const lista = numeros.datos
   const recargarNumeros = numeros.recargar
@@ -112,6 +114,20 @@ export default function Canales() {
       const d = await api<IniciarConnectOut>('/canales/instagram/neuroapi/iniciar', { method: 'POST' })
       window.location.assign(d.connect_url)
     } catch (e) { setError(mensajeError(e, 'No se pudo iniciar la vinculación con Instagram.')); setIniciando(null) }
+  }
+  // Conexión directa con Meta (Embedded Signup vía config_id): en paralelo a
+  // NeuroAPI (arriba) hasta que Meta apruebe Acceso Avanzado de
+  // whatsapp_business_management/whatsapp_business_messaging.
+  const conectarWhatsAppMeta = async () => {
+    limpiar(); setConectandoMeta(true)
+    try {
+      const resultado = await conectarWhatsAppEmbeddedSignup()
+      if (!resultado) return
+      await api('/canales/whatsapp/meta/activar', { method: 'POST', body: { waba_id: resultado.wabaId, phone_number_id: resultado.phoneNumberId } })
+      setAviso('Número de WhatsApp vinculado con Meta. Configura su agente para que empiece a responder.')
+      recargarNumeros(true)
+    } catch (e) { setError(mensajeError(e, 'No se pudo conectar WhatsApp con Meta.')) }
+    finally { setConectandoMeta(false) }
   }
   const reactivar = (n: NumeroWhatsApp) => ejecutar(n.id, async () => {
     await api(`/canales/whatsapp/numeros/${n.id}/reactivar`, { method: 'POST' }); return `${nombreNumero(n)} reactivado.`
@@ -197,9 +213,20 @@ export default function Canales() {
               </div>
             </div>
             {gerencia && (
-              <button type="button" className="btn-primary" onClick={() => { limpiar(); setModo('standard'); setElegirModo(true) }} disabled={iniciando !== null}>
-                Conectar WhatsApp
-              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <button type="button" className="btn-primary" onClick={() => { limpiar(); setModo('standard'); setElegirModo(true) }} disabled={iniciando !== null}>
+                  Conectar WhatsApp
+                </button>
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  onClick={conectarWhatsAppMeta}
+                  disabled={iniciando !== null || conectandoMeta || !META_WA_CONFIG_ID}
+                  title={!META_WA_CONFIG_ID ? 'Falta VITE_META_WA_CONFIG_ID en el entorno del portal' : undefined}
+                >
+                  {conectandoMeta ? 'Conectando…' : 'Conectar WhatsApp con Meta'}
+                </button>
+              </div>
             )}
           </header>
           {lista && <p className="border-b border-line bg-muted/50 px-4 py-2 text-xs text-ink-muted" data-testid="plazas">{textoPlazas(lista)}</p>}

@@ -60,3 +60,16 @@ export const DIAS_SEMANA = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'
 
 export const pesos = (v: string | number | null | undefined) =>
   v === null || v === undefined || v === '' ? '—' : Number(v).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })
+
+/**
+ * "fernanda@gmail.com" → "fe•••••@gmail.com". Solo para repetirle a la persona el correo
+ * que ELLA escribió (recuperar contraseña): nunca se muestra un correo registrado que no tecleó.
+ */
+export function enmascararCorreo(email: string): string {
+  const e = email.trim()
+  const arroba = e.lastIndexOf('@')
+  if (arroba < 1) return e
+  const local = e.slice(0, arroba)
+  const visibles = local.length <= 2 ? 1 : 2
+  return `${local.slice(0, visibles)}${'•'.repeat(Math.max(3, local.length - visibles))}${e.slice(arroba)}`
+}

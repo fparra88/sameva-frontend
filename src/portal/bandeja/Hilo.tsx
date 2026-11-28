@@ -117,7 +117,10 @@ export function Hilo({ carga, onCambio, onFicha, fichaAbierta, puedeTomar }: {
         <button type="button" onClick={onFicha} className="min-w-0 flex-1 cursor-pointer text-left" aria-label="Abrir ficha del contacto">
           <span className="block truncate font-semibold">{nombreContacto(c)}</span>
           <span className="block truncate text-xs text-ink-muted">
-            {humano ? `Con ${c.asignado_nombre ?? 'una persona'}` : 'La IA está atendiendo'}{c.numero_telefono_visible ? ` · ${c.numero_telefono_visible}` : ''}
+            {c.necesita_humano
+              ? <><span className="font-semibold text-danger">Necesita atención de humano</span>{c.asignado_nombre ? ` · Asignada a ${c.asignado_nombre}` : ''}</>
+              : humano ? `Con ${c.asignado_nombre ?? 'una persona'}` : 'La IA está atendiendo'}
+            {c.numero_telefono_visible ? ` · ${c.numero_telefono_visible}` : ''}
           </span>
         </button>
         {puedeTomar && (humano

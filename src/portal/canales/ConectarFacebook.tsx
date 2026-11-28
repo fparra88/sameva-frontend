@@ -1,37 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Spinner } from '../../components'
 import { api, ApiError } from '../../lib/api'
+import { cargarSdk, META_APP_ID as APP_ID } from '../../lib/metaSdk'
 import type { PaginaMeta, ResultadoPagina } from '../../lib/tipos'
 import { Aviso, Dialogo } from '../ui'
 
-// App de Meta (pública). Sin ella no se puede abrir el login de Facebook.
-const APP_ID = import.meta.env.VITE_META_APP_ID as string | undefined
 // Configuración de "Facebook Login for Business"; si falta se pide el permiso por scope.
 const CONFIG_ID = import.meta.env.VITE_META_CONFIG_ID as string | undefined
 const PERMISOS = 'pages_show_list,pages_messaging,pages_manage_metadata,instagram_basic,instagram_manage_messages,business_management'
-const VERSION = 'v21.0'
-
-interface RespuestaLogin { authResponse?: { code?: string } | null }
-interface FbSdk { init: (o: object) => void; login: (cb: (r: RespuestaLogin) => void, o: object) => void }
-declare global { interface Window { FB?: FbSdk; fbAsyncInit?: () => void } }
-
-let cargaSdk: Promise<FbSdk> | null = null
-/** Carga el SDK de Facebook una sola vez. */
-function cargarSdk(): Promise<FbSdk> {
-  if (cargaSdk) return cargaSdk
-  cargaSdk = new Promise<FbSdk>((resolver, rechazar) => {
-    window.fbAsyncInit = () => {
-      window.FB!.init({ appId: APP_ID, cookie: true, xfbml: false, version: VERSION })
-      resolver(window.FB!)
-    }
-    const s = document.createElement('script')
-    s.src = 'https://connect.facebook.net/es_LA/sdk.js'
-    s.async = true
-    s.onerror = () => { cargaSdk = null; rechazar(new Error('No se pudo cargar Facebook. Revisa tu conexión o el bloqueador de anuncios.')) }
-    document.body.appendChild(s)
-  })
-  return cargaSdk
-}
 
 type Paso = 'inicio' | 'conectando' | 'paginas' | 'activando' | 'listo'
 const mensaje = (e: unknown, r: string) => (e instanceof ApiError || e instanceof Error ? e.message : r)

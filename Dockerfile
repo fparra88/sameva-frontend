@@ -6,7 +6,8 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+# Caché de npm entre builds (BuildKit): si cambia el lockfile no se vuelve a bajar todo.
+RUN --mount=type=cache,target=/root/.npm npm ci --prefer-offline --no-audit --no-fund
 
 # Variables del frontend (ver .env.example). Deben existir en build, no en runtime.
 # URL pública de la API, sin /api al final. Ej. https://api.operativai.com.mx
@@ -14,9 +15,11 @@ ARG VITE_API_URL=""
 # Conectar Facebook en Canales
 ARG VITE_META_APP_ID=""
 ARG VITE_META_CONFIG_ID=""
+ARG VITE_META_WA_CONFIG_ID=""
 ENV VITE_API_URL=$VITE_API_URL \
     VITE_META_APP_ID=$VITE_META_APP_ID \
-    VITE_META_CONFIG_ID=$VITE_META_CONFIG_ID
+    VITE_META_CONFIG_ID=$VITE_META_CONFIG_ID \
+    VITE_META_WA_CONFIG_ID=$VITE_META_WA_CONFIG_ID
 
 COPY . .
 RUN npm run build

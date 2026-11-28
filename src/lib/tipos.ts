@@ -17,6 +17,8 @@ export interface ConversacionItem {
   asignado_nombre: string | null
   numero_telefono_visible: string | null
   tiene_varios_numeros: boolean
+  /** El agente la delegó y nadie del equipo ha escrito desde entonces. */
+  necesita_humano: boolean
 }
 
 export interface Adjunto { id: string; mime: string; nombre: string; bytes: number }
@@ -47,6 +49,8 @@ export interface ConversacionDetalle {
   asignado_nombre: string | null
   asignacion_nota: string | null
   numero_telefono_visible: string | null
+  /** El agente la delegó y nadie del equipo ha escrito desde entonces. */
+  necesita_humano: boolean
   mensajes: Mensaje[]
 }
 
